@@ -1,6 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState , useRef} from "react";
 import Link from "next/link";
+
 
 interface Feature {
   id: number;
@@ -19,10 +20,14 @@ export default function FeatureDetail({ params }: FeatureDetailProps) {
   const { id } = params;
   const [feature, setFeature] = useState<Feature | null>(null);
   const [loading, setLoading] = useState(true);
+  const scrollPosition = useRef<number>(0); // menyimpan posisi scroll sebelum fetch
 
   const API_URL = `https://situ.ciamiskab.go.id/api/v3/simpatik/katalog-aplikasi/${id}`;
 
   useEffect(() => {
+
+    scrollPosition.current = window.scrollY;
+
     const fetchFeature = async () => {
       try {
         const res = await fetch(API_URL, {
@@ -42,6 +47,14 @@ export default function FeatureDetail({ params }: FeatureDetailProps) {
         setFeature(null);
       } finally {
         setLoading(false);
+      
+         // kembalikan scroll ke posisi sebelumnya dengan smooth
+        setTimeout(() => {
+          window.scrollTo({
+            top: scrollPosition.current,
+            behavior: "smooth",
+          });
+        }, 150);
       }
     };
 

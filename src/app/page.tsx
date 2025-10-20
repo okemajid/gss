@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Navbar from "../components/Navbar";
 import HeroCarousel from "@/components/Carousel";
 import Footer from "@/components/Footer";
@@ -25,15 +25,20 @@ export default function HomePage() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
-  // 🔹 Ambil kategori & semua data awal hanya sekali
+  // Simpan posisi scroll untuk mencegah "lompat"
+  const scrollLockRef = useRef<number>(0);
+
+  useEffect(() => {
+    // Scroll ke atas hanya sekali saat pertama load
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
+
+  // 🔹 Ambil kategori & data awal
   useEffect(() => {
     const fetchInitial = async () => {
       setLoading(true);
-      const [catData, featData] = await Promise.all([
-        getCategories(),
-        getFeatures(), // ambil semua fitur (tanpa kategori)
-      ]);
-      setCategories(catData); // catData sudah termasuk “All” di data/features.ts
+      const [catData, featData] = await Promise.all([getCategories(), getFeatures()]);
+      setCategories(catData);
       setFeatures(featData);
       setFilteredFeatures(featData);
       setLoading(false);
@@ -41,28 +46,26 @@ export default function HomePage() {
     fetchInitial();
   }, []);
 
-  // 🔹 Jika kategori berubah, ambil ulang dari API
+  // 🔹 Jika kategori berubah
   useEffect(() => {
     const fetchByCategory = async () => {
       setLoading(true);
       let data;
       if (activeCategory.id === 0) {
-        // Semua kategori
         data = await getFeatures();
       } else {
-        // Berdasarkan kategori dari API
         data = await getFeatures(activeCategory.id);
       }
       setFeatures(data);
       setFilteredFeatures(data);
-      setSearchTerm(""); // reset pencarian saat ganti kategori
+      setSearchTerm("");
       setCurrentPage(1);
       setLoading(false);
     };
     fetchByCategory();
   }, [activeCategory]);
 
-  // 🔹 Filter pencarian lokal (tidak panggil API)
+  // 🔹 Filter pencarian
   useEffect(() => {
     if (!searchTerm.trim()) {
       setFilteredFeatures(features);
@@ -95,10 +98,21 @@ export default function HomePage() {
   const indexOfFirst = indexOfLast - itemsPerPage;
   const currentFeatures = filteredFeatures.slice(indexOfFirst, indexOfLast);
 
+  // ✅ Saat pagination berubah, kunci posisi scroll
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
+      // Simpan posisi scroll saat ini
+      scrollLockRef.current = window.scrollY;
+
       setCurrentPage(page);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      // Setelah React update, kembalikan posisi scroll ke tempat semula
+      setTimeout(() => {
+        window.scrollTo({
+          top: scrollLockRef.current,
+          behavior: "instant",
+        });
+      }, 100);
     }
   };
 
