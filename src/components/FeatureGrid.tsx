@@ -14,8 +14,8 @@ export default function FeatureGrid({ features, loading }: Props) {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 w-full max-w-6xl mb-10 justify-center items-center text-center">
-      {features.map((f) => (
-        <CardFeature key={f.id} {...f} />
+      {features.map((f, index) => (
+        <CardFeature key={index} {...f} />
       ))}
     </div>
   );
