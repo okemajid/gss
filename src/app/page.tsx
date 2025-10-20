@@ -123,7 +123,7 @@ export default function HomePage() {
         <div className="fixed inset-0 z-50 flex flex-col justify-center items-center bg-white/70 backdrop-blur-md">
           <div className="w-20 h-20 border-4 border-blue-300 border-t-blue-600 rounded-full animate-spin"></div>
           <p className="mt-6 text-blue-700 text-lg font-semibold">
-            Memuat Galuh Smart Services...
+            Memuat Sawala...
           </p>
         </div>
       )}

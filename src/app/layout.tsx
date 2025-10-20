@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Galuh Smart Services ",
-  description: "Galuh Smart Services - Temukan Layanan Terbaik untuk Kebutuhan Anda",
+  title: "SAWALA ",
+  description: "SAWALA - Sistem Aplikasi dan Wadah Layanan",
   icons: {
     icon: "/images/ciamis.svg",
   },

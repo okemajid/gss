@@ -83,7 +83,7 @@ export default function Navbar() {
               className="rounded-md"
             />
             <span className="text-lg font-semibold text-white">
-              GALUH SMART SERVICES
+              SAWALA
             </span>
           </div>
 

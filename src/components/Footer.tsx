@@ -33,10 +33,10 @@ export default function Footer() {
               height={48}
               className="rounded-md"
             />
-            <h2 className="text-xl font-semibold">Galuh Smart Services</h2>
+            <h2 className="text-xl font-semibold">Sawala</h2>
           </div>
           <p className="text-gray-300 text-sm leading-relaxed max-w-xs">
-            Platform layanan digital terpadu untuk memudahkan akses masyarakat terhadap berbagai layanan publik di Kabupaten Ciamis.
+            Platform layanan digital terpadu Tatar Galuh untuk memudahkan masyarakat mengakses berbagai layanan dan aplikasi di Kabupaten Ciamis.
           </p>
         </div>
 
@@ -102,7 +102,7 @@ export default function Footer() {
       {/* 🔹 Garis bawah & copyright */}
       <div className="border-t border-white/20 mt-10 pt-4 text-center text-gray-300 text-sm">
         © {new Date().getFullYear()}{" "}
-        <span className="text-[#00C18B] font-medium">Galuh Smart Services</span>. Semua hak dilindungi.
+        <span className="text-[#00C18B] font-medium">Sawala</span>. Semua hak dilindungi.
       </div>
     </footer>
   );
