@@ -12,7 +12,7 @@ export default function LoginModal({ show, onClose, onLogin }: LoginModalProps) 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  if (!show) return null; // jika tidak aktif, tidak render apa pun
+  if (!show) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,23 +20,26 @@ export default function LoginModal({ show, onClose, onLogin }: LoginModalProps) 
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-[999] flex items-center justify-center animate-fadeIn">
-      <div className="bg-white rounded-2xl shadow-2xl w-[90%] max-w-md p-8 relative animate-slideUp">
-        {/* Tombol close */}
+    <div className="fixed inset-0 bg-gradient-to-br from-[#0E3B8C]/80 to-[#08225C]/90 backdrop-blur-md z-[999] flex items-center justify-center animate-fadeIn">
+      {/* 🔹 Card Login */}
+      <div className="relative w-[90%] max-w-md bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl p-8 text-white animate-slideUp">
+        {/* Tombol Close */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-4 text-gray-500 hover:text-gray-700 text-lg"
+          className="absolute top-3 right-4 text-gray-300 hover:text-white text-lg font-bold transition"
         >
           ✕
         </button>
 
-        <h2 className="text-2xl font-bold text-center mb-6 text-[#0E3B8C]">
-          Masuk ke Akun
+        {/* Judul */}
+        <h2 className="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent">
+          Selamat Datang Kembali
         </h2>
 
+        {/* Form Login */}
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-gray-700 text-sm font-medium mb-2">
+            <label className="block text-sm font-medium mb-2 text-cyan-100">
               Email
             </label>
             <input
@@ -44,13 +47,13 @@ export default function LoginModal({ show, onClose, onLogin }: LoginModalProps) 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#0E3B8C]"
+              className="w-full bg-white/20 border border-white/30 rounded-lg px-4 py-2 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-400"
               placeholder="Masukkan email Anda"
             />
           </div>
 
           <div>
-            <label className="block text-gray-700 text-sm font-medium mb-2">
+            <label className="block text-sm font-medium mb-2 text-cyan-100">
               Password
             </label>
             <input
@@ -58,28 +61,28 @@ export default function LoginModal({ show, onClose, onLogin }: LoginModalProps) 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#0E3B8C]"
+              className="w-full bg-white/20 border border-white/30 rounded-lg px-4 py-2 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-400"
               placeholder="Masukkan password"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full bg-[#00C18B] hover:bg-[#00a576] text-white font-semibold py-2.5 rounded-lg transition-all"
+            className="w-full bg-gradient-to-r from-[#00C18B] to-[#00A572] hover:from-[#00A572] hover:to-[#008B60] text-white font-semibold py-2.5 rounded-lg transition-all shadow-lg"
           >
             Masuk
           </button>
         </form>
 
-        <p className="text-sm text-center text-gray-500 mt-4">
+        <p className="text-sm text-center text-gray-300 mt-5">
           Belum punya akun?{" "}
-          <a href="#" className="text-[#0E3B8C] hover:underline font-medium">
+          <a href="#" className="text-cyan-300 hover:underline font-medium">
             Daftar di sini
           </a>
         </p>
       </div>
 
-      {/* 🔹 Animasi Tailwind tambahan */}
+      {/* 🔹 Animasi */}
       <style jsx global>{`
         @keyframes fadeIn {
           from {

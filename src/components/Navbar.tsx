@@ -12,7 +12,6 @@ export default function Navbar() {
   const menus = [
     { name: "Home", href: "#hero" },
     { name: "Daftar Aplikasi", href: "#daftar-aplikasi" },
-    { name: "Statistik", href: "#statistik" },
   ];
 
   // 🔹 Efek scroll

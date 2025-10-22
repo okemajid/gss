@@ -48,7 +48,6 @@ export default function Footer() {
           <ul className="space-y-2 text-gray-300 text-sm">
             <li><Link href="#" className="hover:text-[#00C18B] transition">Home</Link></li>
             <li><Link href="#daftar-aplikasi" className="hover:text-[#00C18B] transition">Daftar Aplikasi</Link></li>
-            <li><Link href="#statistik" className="hover:text-[#00C18B] transition">Statistik</Link></li>
           </ul>
         </div>
 

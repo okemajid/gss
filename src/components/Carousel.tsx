@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useState } from "react";
+import StatistikSection from "./statistik";
 
 export default function HeroCarousel() {
   const slide = {
@@ -15,6 +17,8 @@ export default function HeroCarousel() {
     backgroundImage: "/images/bg-footer.svg", // 🔹 SVG transparan
     bgColor: "linear-gradient(to right, #08225C, #0E3B8C)", // 🔹 gradasi
   };
+  
+  const [showStatistik, setShowStatistik] = useState(false);
 
   return (
     <section
@@ -42,17 +46,29 @@ export default function HeroCarousel() {
           <h6 className="text-1xl md:text-2xl font-bold leading-tight drop-shadow-lg">
             {slide.desc}
           </h6>
-          <button 
-            onClick={() => {
-              const section = document.getElementById("daftar-aplikasi");
-              if (section) {
-                section.scrollIntoView({ behavior: "smooth" });
-              }
-            }}
-            className="bg-[#00C18B] hover:bg-[#00a576] text-white px-8 py-4 rounded-full font-semibold transition-all shadow-lg"
-          >
-            {slide.button }
+          <button
+            onClick={() => setShowStatistik(true)}
+              className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all mt-4"
+              >
+              Lihat Statistik
           </button>
+                  
+          
+          {/* 🔹 Modal Statistik */}
+          {showStatistik && (
+          <div className="fixed inset-0 z-50 bg-black/50 flex justify-center items-center backdrop-blur-sm">
+            <div className="bg-gradient-to-r from-[#0E3B8C] to-[#08225C] rounded-2xl w-[90%] md:w-[80%] lg:w-[70%] max-h-[90vh] overflow-y-auto relative shadow-xl p-6">
+              <button
+                onClick={() => setShowStatistik(false)}
+                  className="absolute top-3 right-3 text-gray-600 hover:text-red-500 text-lg font-bold"
+              >
+                ✕
+              </button>
+          
+              <StatistikSection />
+            </div>
+          </div>
+          )}
         </motion.div>
 
         {/* 🔹 Gambar kanan */}

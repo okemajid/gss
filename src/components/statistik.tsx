@@ -48,7 +48,7 @@ export default function StatistikSection() {
       className="
         relative 
         min-h-[600px]
-        scroll-mt-34
+        scroll-mt-50
         flex items-center justify-center
         bg-gradient-to-r from-[#0E3B8C] to-[#08225C]
         overflow-hidden rounded-4xl

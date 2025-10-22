@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 import HeroCarousel from "@/components/Carousel";
 import Footer from "@/components/Footer";
 import SearchAndCategoryBar from "../components/SearchBar";
-import StatistikSection from "@/components/statistik";
+import Pagination from "@/components/Pagination";
 import FeatureGrid from "../components/FeatureGrid";
 import { getFeatures, getCategories, Feature } from "../data/features";
 
@@ -20,6 +20,7 @@ export default function HomePage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -130,7 +131,7 @@ export default function HomePage() {
 
       <HeroCarousel />
       <Navbar />
-
+         
       <section
         id="daftar-aplikasi"
         className="w-full min-h-screen flex flex-col items-center justify-start pt-24 pb-10 text-center bg-white"
@@ -151,50 +152,16 @@ export default function HomePage() {
         <FeatureGrid features={currentFeatures} loading={loading} />
 
         {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="flex justify-center items-center gap-2 mt-6">
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              className={`px-3 py-1 rounded-md text-sm font-medium ${
-                currentPage === 1
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  : "bg-blue-600 hover:bg-blue-700 text-white"
-              }`}
-            >
-              Prev
-            </button>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          maxVisible={3} // bisa diubah sesuai kebutuhan
+        />
 
-            {[...Array(totalPages)].map((_, i) => (
-              <button
-                key={i}
-                onClick={() => handlePageChange(i + 1)}
-                className={`px-3 py-1 rounded-md text-sm font-medium transition ${
-                  currentPage === i + 1
-                    ? "bg-blue-600 text-white shadow"
-                    : "bg-white border border-gray-300 hover:bg-blue-50"
-                }`}
-              >
-                {i + 1}
-              </button>
-            ))}
 
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className={`px-3 py-1 rounded-md text-sm font-medium ${
-                currentPage === totalPages
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  : "bg-blue-600 hover:bg-blue-700 text-white"
-              }`}
-            >
-              Next
-            </button>
-          </div>
-        )}
       </section>
-
-      <StatistikSection />
+         
       <Footer />
     </main>
   );

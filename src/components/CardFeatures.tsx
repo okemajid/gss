@@ -60,7 +60,7 @@ export default function CardFeature({
                    border border-[#C5DBFF]
                    shadow-md hover:shadow-blue-200/60
                    transition-all duration-300 cursor-pointer
-                   w-[180px] md:w-[270px] min-h-[300px] p-6 group mx-auto"
+                   w-[170px] md:w-[270px] min-h-[280px] p-6 group mx-auto"
       >
         {/* 🔹 Logo atau Ikon */}
         <div className="flex justify-center mb-4">
