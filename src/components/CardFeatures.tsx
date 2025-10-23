@@ -64,7 +64,7 @@ export default function CardFeature({
                     border border-[#C5DBFF]
                     shadow-md hover:shadow-blue-200/60
                     transition-all duration-300 cursor-pointer
-                    w-[160px] md:w-[240px] h-[290px] p-4 group"
+                    w-[160px] md:w-[240px] h-[290px] p-4 pb-8 group"  // 🔹 Tambah pb-8 agar teks bawah lega
         >
           {/* 🔹 Logo / Ikon */}
           <div className="flex justify-center mb-3">
@@ -125,27 +125,27 @@ export default function CardFeature({
           )}
 
           {/* 🔹 No Registrasi */}
-          <div
-            className="text-[10px] text-gray-600 border-t border-[#CFDCF8] w-full text-center pt-1.5 mt-auto
-                       transition-colors duration-300 group-hover:text-white"
-          >
-            No. Registrasi: {nomor_registrasi}
-          </div>
+           <div
+              className="text-[10px] text-gray-600 border-t border-[#CFDCF8] w-full text-center pt-1.5 mt-auto
+                        transition-colors duration-300 group-hover:text-white"
+            >
+              No. Registrasi: {nomor_registrasi}
+            </div>
 
           {/* 🔹 Tombol Panah */}
           <motion.div
-            className="absolute bottom-3 right-3"
+            className="absolute bottom-2 md:bottom-3 right-2 md:right-3" // 🔹 Geser sedikit ke atas di mobile
             animate={{ rotate: 0 }}
             whileHover={{ rotate: 45 }}
             transition={{ type: "spring", stiffness: 250, damping: 15 }}
           >
             <div
               className="w-7 h-7 flex items-center justify-center
-                         rounded-full border-2 border-[#0E3B8C]
-                         text-[#0E3B8C] bg-white
-                         transition-all duration-300
-                         group-hover:bg-white/20 group-hover:text-white
-                         group-hover:border-white shadow-sm"
+                        rounded-full border-2 border-[#0E3B8C]
+                        text-[#0E3B8C] bg-white
+                        transition-all duration-300
+                        group-hover:bg-white/20 group-hover:text-white
+                        group-hover:border-white shadow-sm"
             >
               <ArrowUpRight size={14} />
             </div>
