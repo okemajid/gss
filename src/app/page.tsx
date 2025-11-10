@@ -168,9 +168,11 @@ export default function HomePage() {
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={handlePageChange}
-          maxVisible={3} // bisa diubah sesuai kebutuhan
+          totalData={features.length}
+          itemsPerPage={8}
+          onPageChange={setCurrentPage}
         />
+
 
 
       </section>
