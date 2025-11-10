@@ -68,8 +68,8 @@ export default function SearchAndCategoryBar({
                   transition-all duration-500 ease-in-out w-full md:w-[300px] max-w-lg 
                   focus-within:md:w-[380px] hover:shadow-lg"
       >
-        <div className="flex items-center flex-1 px-4">
-          <Search size={16} className="text-gray-400 mr-2 hidden sm:block transition-transform duration-300 group-focus-within:scale-110" />
+        <div className="flex items-center flex-1 px-3">
+          <Search size={16} className="text-gray-400 mr-5 hidden sm:block transition-transform duration-300 group-focus-within:scale-110" />
           <input
             type="text"
             placeholder="Cari aplikasi..."

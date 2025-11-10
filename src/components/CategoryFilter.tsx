@@ -33,7 +33,7 @@ export default function CategoryFilter({ categories, activeCategory, setActiveCa
             onClick={() => setActiveCategory(cat)}
             className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all duration-300
               ${isActive
-                ? "bg-blue-600 text-white border-blue-600 shadow-md"
+                ? "bg-blue-600 text-white border-blue-600"
                 : "bg-white hover:bg-blue-50 border-gray-300 text-gray-700"}
             `}
           >

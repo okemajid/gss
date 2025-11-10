@@ -71,6 +71,14 @@ export default function Footer() {
                   Daftar Aplikasi
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/tentang"
+                  className="hover:text-[#00C18B] transition"
+                >
+                  Tentang
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -81,7 +89,7 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3 text-gray-300 text-sm">
               <li className="flex flex-row sm:flex-col md:flex-row items-start sm:items-center md:items-start gap-2 justify-start sm:justify-center md:justify-start">
-                <MapPin className="w-4 h-4 text-[#00C18B] mt-1 flex-shrink-0" />
+                <MapPin className="w-4 h-4 text-white mt-1 flex-shrink-0" />
                 <span className="max-w-[250px]">
                   Dinas Komunikasi dan Informatika Kab. Ciamis
                   <br />
@@ -89,11 +97,11 @@ export default function Footer() {
                 </span>
               </li>
               <li className="flex flex-row sm:flex-col md:flex-row items-center sm:items-center md:items-start gap-2 justify-start sm:justify-center md:justify-start">
-                <Phone className="w-4 h-4 text-[#00C18B]" />
+                <Phone className="w-4 h-4 text-white" />
                 <span>(0265) 773000</span>
               </li>
               <li className="flex flex-row sm:flex-col md:flex-row items-center sm:items-center md:items-start gap-2 justify-start sm:justify-center md:justify-start">
-                <Mail className="w-4 h-4 text-[#00C18B]" />
+                <Mail className="w-4 h-4 text-white" />
                 <span>diskominfo@ciamiskab.go.id</span>
               </li>
             </ul>
@@ -111,10 +119,10 @@ export default function Footer() {
               <Link href="#" className="hover:text-[#00C18B] transition">
                 <Twitter size={22} />
               </Link>
-              <Link href="#" className="hover:text-[#00C18B] transition">
+              <Link href="https://www.instagram.com/diskominfo_cms/" className="hover:text-[#00C18B] transition">
                 <Instagram size={22} />
               </Link>
-              <Link href="#" className="hover:text-[#00C18B] transition">
+              <Link href="https://diskominfo.ciamiskab.go.id/" className="hover:text-[#00C18B] transition">
                 <Globe size={22} />
               </Link>
             </div>
@@ -125,8 +133,7 @@ export default function Footer() {
       {/* 🔹 Garis bawah & copyright */}
       <div className="border-t border-white/20 mt-10 pt-4 text-left md:text-center text-gray-300 text-xs sm:text-sm px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20">
         © {new Date().getFullYear()}{" "}
-        <span className="text-[#00C18B] font-medium">Sawala</span>. Semua hak
-        dilindungi.
+        <span className="text-[#00C18B] font-medium"></span>Dinas Komunikasi dan Informatika - Pemerintah Kabupaten Ciamis
       </div>
     </footer>
   );

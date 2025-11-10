@@ -9,8 +9,14 @@ interface StatistikItem {
   name: string;
   total: number;
 }
+// ✅ Tambahkan definisi props di sini
+interface StatistikSectionProps {
+  asPopup?: boolean;
+  onClose?: () => void;
+}
 
-export default function StatistikSection() {
+// ✅ Terapkan props di sini ⬇️
+export default function StatistikSection({ asPopup = false, onClose }: StatistikSectionProps) {
   const [statistik, setStatistik] = useState<StatistikItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [activePopup, setActivePopup] = useState<StatistikItem | null>(null);

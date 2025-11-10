@@ -8,6 +8,7 @@ import SearchAndCategoryBar from "../components/SearchBar";
 import Pagination from "@/components/Pagination";
 import FeatureGrid from "../components/FeatureGrid";
 import { getFeatures, getCategories, Feature } from "../data/features";
+import { useSearchParams } from "next/navigation";
 
 export default function HomePage() {
   const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
@@ -20,6 +21,7 @@ export default function HomePage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
   
 
   // Pagination
@@ -28,7 +30,18 @@ export default function HomePage() {
 
   // Simpan posisi scroll untuk mencegah "lompat"
   const scrollLockRef = useRef<number>(0);
-
+  // 🔹 Scroll ke bagian tertentu jika ada query scrollTo
+  useEffect(() => {
+    const section = searchParams.get("scrollTo");
+    if (section) {
+      const target = document.getElementById(section);
+      if (target) {
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: "smooth" });
+        }, 400);
+      }
+    }
+  }, [searchParams]);
   useEffect(() => {
     // Scroll ke atas hanya sekali saat pertama load
     window.scrollTo({ top: 0, behavior: "instant" });
