@@ -13,7 +13,7 @@ export default function HeroCarousel() {
       {/* 🔹 Background Video */}
       <video
         className="absolute inset-0 w-full h-full object-cover"
-        src="/videos/carousel4.mp4"
+        src="/videos/carousel5.mp4"
         autoPlay
         muted
         loop
