@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import LoginModal from "./Login";
 import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
@@ -57,10 +56,6 @@ export default function Navbar() {
     }
   };
 
-  const handleLogin = (email: string, password: string) => {
-    console.log("Login attempt:", { email, password });
-    setShowLogin(false);
-  };
 
   return (
     <>
@@ -117,15 +112,6 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Tombol Login
-          <div className="hidden md:flex items-center">
-            <button
-              onClick={() => setShowLogin(true)}
-              className="text-sm font-medium px-5 py-2 rounded-full shadow-md bg-[#00C18B] hover:bg-[#00a576] text-white transition-all"
-            >
-              Login
-            </button>
-          </div> */}
 
           {/* Tombol Mobile */}
           <button
@@ -178,11 +164,7 @@ export default function Navbar() {
         ></div>
       )}
 
-      <LoginModal
-        show={showLogin}
-        onClose={() => setShowLogin(false)}
-        onLogin={handleLogin}
-      />
+      
     </>
   );
 }
