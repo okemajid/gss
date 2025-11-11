@@ -19,26 +19,26 @@ export default function FeatureGrid({ features, loading }: Props) {
       </p>
     );
 
-  // 🔹 Batasi maksimal 8 card saja (2x4 di mobile, 4x2 di desktop)
-  const limitedFeatures = features.slice(0, 8);
+  // 🔹 Batasi maksimal 12 card (6 per baris di desktop)
+  const limitedFeatures = features.slice(0, 12);
 
   return (
     <div
       className="
         grid
-        grid-cols-2                /* 🔹 Mobile: 2 kolom (4 baris = 8 card) */
-        sm:grid-cols-2             
-        md:grid-cols-3             
-        lg:grid-cols-4             /* 🔹 Desktop: 4 kolom (2 baris = 8 card) */
-        gap-x-3 gap-y-4 
-        sm:gap-x-4 sm:gap-y-5 
-        md:gap-x-5 md:gap-y-6 
-        px-3 sm:px-4 md:px-6 lg:px-8 
-        py-4 sm:py-6
+        grid-cols-2
+        sm:grid-cols-3
+        md:grid-cols-4
+        lg:grid-cols-6
+        auto-rows-auto
+        gap-x-7 gap-y-7
+        px-3 sm:px-4 md:px-8 lg:px-12 
+        py-4 sm:py-6 lg:py-8
         place-items-center
         transition-all duration-300
       "
     >
+
       {limitedFeatures.map((f, index) => (
         <CardFeature key={index} {...f} />
       ))}

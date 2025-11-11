@@ -102,7 +102,12 @@ export default function Footer() {
               </li>
               <li className="flex flex-row sm:flex-col md:flex-row items-center sm:items-center md:items-start gap-2 justify-start sm:justify-center md:justify-start">
                 <Mail className="w-4 h-4 text-white" />
-                <span>diskominfo@ciamiskab.go.id</span>
+                <a
+                  href="mailto:diskominfo@ciamiskab.go.id"
+                  className="text-white hover:text-[#00C18B] transition-colors"
+                >
+                  diskominfo@ciamiskab.go.id
+                </a>
               </li>
             </ul>
           </div>

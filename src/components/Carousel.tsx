@@ -1,19 +1,33 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import StatistikSection from "@/components/statistik"; // pastikan path sesuai
+import StatistikSection from "@/components/statistik";
 
 export default function HeroCarousel() {
   const [showStats, setShowStats] = useState(false);
+
+  // 🚫 Matikan scroll body ketika popup aktif
+  useEffect(() => {
+    if (showStats) {
+      document.body.style.overflow = "hidden"; // Matikan scroll halaman utama
+    } else {
+      document.body.style.overflow = ""; // Aktifkan kembali scroll
+    }
+
+    // Bersihkan efek jika komponen di-unmount
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showStats]);
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden text-white flex items-center justify-center">
       {/* 🔹 Background Video */}
       <video
         className="absolute inset-0 w-full h-full object-cover"
-        src="/videos/carousel5.mp4"
+        src="/videos/carousel6.mp4"
         autoPlay
         muted
         loop
@@ -21,7 +35,7 @@ export default function HeroCarousel() {
       />
       <div className="absolute inset-0 bg-gradient-to-r from-[#08225C]/60 to-[#0E3B8C]/50" />
 
-      {/* 🔹 Konten */}
+      {/* 🔹 Konten Hero */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -35,15 +49,16 @@ export default function HeroCarousel() {
           <p className="text-gray-200 text-lg md:text-xl max-w-2xl">
             Akses berbagai layanan publik Ciamis dalam satu genggaman. Mudah, cepat, dan transparan.
           </p>
+
+          {/* 🔹 Tombol */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
             <button
               onClick={() => setShowStats(true)}
-              className="px-6 py-3 bg-[#00C18B] hover:bg-[#00a576] text-white font-semibold rounded-full transition-all transform hover:scale-105 shadow-lg"
+              className="px-6 py-3 bg-[#00a576] hover:bg-[#00C18B] text-white font-semibold rounded-full transition-all transform hover:scale-105 shadow-lg"
             >
               Statistik
             </button>
-            {/* 🔹 Tombol Tentang Sawala dengan Link */}
-            
+
             <Link
               href="/tentang"
               className="px-6 py-3 border border-white/60 hover:bg-white/10 text-white font-semibold rounded-full transition-all text-center"
@@ -58,7 +73,7 @@ export default function HeroCarousel() {
       <AnimatePresence>
         {showStats && (
           <>
-            {/* Overlay (klik di luar = tutup) */}
+            {/* Overlay Blur */}
             <motion.div
               key="overlay"
               initial={{ opacity: 0 }}
@@ -76,10 +91,10 @@ export default function HeroCarousel() {
               exit={{ opacity: 0, scale: 0.9, y: 40 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
               className="fixed inset-0 z-50 flex items-center justify-center p-4"
-              onClick={(e) => e.stopPropagation()} // supaya klik di dalam popup tidak menutup
+              onClick={(e) => e.stopPropagation()}
             >
               <div className="relative bg-white rounded-3xl shadow-2xl max-w-5xl w-full p-6 overflow-y-auto max-h-[90vh]">
-                {/* Tombol close */}
+                {/* Tombol Close */}
                 <button
                   onClick={() => setShowStats(false)}
                   className="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-2xl font-bold transition-all"

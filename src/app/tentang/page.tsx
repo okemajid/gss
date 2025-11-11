@@ -11,25 +11,25 @@ export default function TentangPage() {
       title: "Layanan Satu Pintu",
       desc: "Akses berbagai layanan digital Pemerintah Kabupaten Ciamis dalam satu genggaman.",
       color: "bg-[#2F68FF]",
-      icon: <Layers size={44} />,
+      icon: <Layers size={30} />,
     },
     {
       title: "Integrasi",
       desc: "Mengoptimalkan layanan publik yang efisien dan saling terhubung antar instansi.",
       color: "bg-[#01B77B]",
-      icon: <Globe size={44} />,
+      icon: <Globe size={30} />,
     },
     {
       title: "Kolaborasi",
       desc: "Mendorong sinergi antara pemerintah, masyarakat, dan pelaku digital untuk kemajuan bersama.",
       color: "bg-[#8A52F3]",
-      icon: <Users size={44} />,
+      icon: <Users size={30} />,
     },
     {
       title: "Inovasi",
       desc: "Meningkatkan kualitas pelayanan publik melalui ide dan teknologi terbaru.",
       color: "bg-[#FF8A00]",
-      icon: <Zap size={44} />,
+      icon: <Zap size={30} />,
     },
   ];
   
@@ -45,7 +45,7 @@ export default function TentangPage() {
       <Navbar />
 
       {/* 🔹 Hero Section */}
-      <section className="relative w-full min-h-[75vh] flex flex-col justify-center items-center text-center text-white bg-gradient-to-r from-[#08225C] to-[#0E3B8C] overflow-hidden">
+      <section className="relative w-full min-h-[50vh] flex flex-col justify-center items-center text-center text-white bg-gradient-to-r from-[#08225C] to-[#0E3B8C] overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/bg-footer.svg')] bg-cover bg-center opacity-80"></div>
         
         <motion.h1
@@ -76,7 +76,7 @@ export default function TentangPage() {
           className="max-w-6xl text-gray-200 text-lg leading-relaxed z-10 px-6 mt-4"
         >
           Nama Sawala berasal dari bahasa Sunda yang berarti{" "}
-          <span className="italic">musyawarah</span> — tempat berdiskusi dan
+          <span className="italic">musyawarah,</span> tempat berdiskusi dan
           mencapai mufakat. Makna ini mencerminkan semangat kolaborasi dan
           kebersamaan dalam membangun transformasi digital di Kabupaten Ciamis.
         </motion.p>
@@ -95,7 +95,7 @@ export default function TentangPage() {
             Transformasi Digital untuk Wargi Ciamis
           </h2>
           <p className="text-lg leading-relaxed text-gray-700 max-w-3xl mx-auto">
-            <span className="font-semibold text-[#0E3B8C]">Sawala</span> lahir
+            <span className="font-semibold text-[#0E3B8C]">Sawala</span> lahir sejak 2025
             untuk menyatukan seluruh layanan digital Pemerintah Kabupaten Ciamis
             dalam satu platform terpadu. Kami berkomitmen menghadirkan sistem
             pelayanan publik yang efisien, transparan, dan inovatif bagi seluruh
@@ -140,7 +140,7 @@ export default function TentangPage() {
               {/* 🔹 Konten */}
               <div className="relative z-10">
                 <h1 className="text-xl font-semibold mb-2">{item.title}</h1>
-                <h3 className="text-sm leading-relaxed opacity-90">{item.desc}</h3>
+                <h3 className="text-md leading-relaxed opacity-90">{item.desc}</h3>
               </div>
 
               {/* 🔹 Icon di pojok kanan bawah */}

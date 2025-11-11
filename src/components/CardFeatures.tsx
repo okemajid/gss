@@ -60,7 +60,7 @@ export default function CardFeature({
           transition={{ type: "spring", stiffness: 150, damping: 15 }}
           className="relative flex flex-col justify-between
                     rounded-2xl bg-gradient-to-br from-[#EAF3FF] to-[#D9E8FF]
-                    hover:from-[#00008B] hover:to-[#00008B]
+                    hover:from-[#08225C]/90 hover:to-[#0E3B8C]/90
                     border border-[#C5DBFF]
                     shadow-md hover:shadow-blue-200/60
                     transition-all duration-300 cursor-pointer

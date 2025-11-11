@@ -26,7 +26,7 @@ export default function HomePage() {
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+  const itemsPerPage = 12;
 
   // Simpan posisi scroll untuk mencegah "lompat"
   const scrollLockRef = useRef<number>(0);
@@ -147,7 +147,7 @@ export default function HomePage() {
          
       <section
         id="daftar-aplikasi"
-        className="w-full min-h-screen flex flex-col items-center justify-start pt-24 pb-10 text-center bg-white"
+        className="w-full min-h-screen flex flex-col items-center justify-start pt-32 pb-10 text-center bg-white"
       >
         <SearchAndCategoryBar
           activeCategory={activeCategory}
@@ -169,7 +169,7 @@ export default function HomePage() {
           currentPage={currentPage}
           totalPages={totalPages}
           totalData={features.length}
-          itemsPerPage={8}
+          itemsPerPage={12}
           onPageChange={setCurrentPage}
         />
 

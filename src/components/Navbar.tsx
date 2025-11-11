@@ -117,7 +117,7 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Tombol Login */}
+          {/* Tombol Login
           <div className="hidden md:flex items-center">
             <button
               onClick={() => setShowLogin(true)}
@@ -125,7 +125,7 @@ export default function Navbar() {
             >
               Login
             </button>
-          </div>
+          </div> */}
 
           {/* Tombol Mobile */}
           <button
