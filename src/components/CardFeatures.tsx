@@ -54,73 +54,83 @@ export default function CardFeature({
 
   return (
     <Link href={url} target="_blank">
-      <motion.div
+     <motion.div
         whileHover={{ y: -6, scale: 1.02 }}
         transition={{ type: "spring", stiffness: 150, damping: 15 }}
-        className="relative flex flex-col justify-between
-                  rounded-2xl bg-gradient-to-br from-[#EAF3FF] to-[#D9E8FF]
-                  hover:from-[#08225C]/90 hover:to-[#0E3B8C]/90
-                  border border-[#C5DBFF]
-                  shadow-md hover:shadow-blue-200/60
-                  transition-all duration-300 cursor-pointer
-                  w-full max-w-[260px] md:max-w-[300px] h-[290px]
-                  p-4 pb-8 group"
+        className="
+          relative flex flex-col
+          rounded-2xl bg-gradient-to-br from-[#EAF3FF] to-[#D9E8FF]
+          hover:from-[#08225C]/90 hover:to-[#0E3B8C]/90
+          border border-[#C5DBFF]
+          shadow-md hover:shadow-blue-200/60
+          transition-all duration-300 cursor-pointer
+
+          w-[200px] md:w-[260px]   /* LEBAR KONSISTEN */
+          h-[300px]                /* TINGGI KONSISTEN */
+          shrink-0                /* AGAR GRID TIDAK MENEKAN WIDTH */
+
+          p-4 group
+        "
       >
-        {/* Logo */}
-        <div className="flex justify-center mb-3">
-          <div className="bg-white p-2.5 rounded-xl shadow-sm border border-[#E0EAFF] flex items-center justify-center w-[45px] h-[45px]">
-            {logo ? (
-              <Image
-                src={logo}
-                alt={nama_aplikasi || "Logo"}
-                width={40}
-                height={40}
-                className="rounded-md object-contain"
-              />
-            ) : (
-              getDefaultIcon(domain_aplikasi)
-            )}
+
+        {/* Content wrapper with flex-grow */}
+        <div className="flex flex-col flex-grow overflow-hidden">
+          {/* Logo */}
+          <div className="flex justify-center mb-3">
+            <div className="bg-white p-2.5 rounded-xl shadow-sm border border-[#E0EAFF] flex items-center justify-center w-[45px] h-[45px]">
+              {logo ? (
+                <Image
+                  src={logo}
+                  alt={nama_aplikasi || "Logo"}
+                  width={40}
+                  height={40}
+                  className="rounded-md object-contain"
+                />
+              ) : (
+                getDefaultIcon(domain_aplikasi)
+              )}
+            </div>
           </div>
+
+          {/* Nama */}
+          <h3 className="text-center text-[#0E3B8C] text-sm font-semibold mb-1 line-clamp-2 group-hover:text-white">
+            {nama_aplikasi || "Tanpa Nama"}
+          </h3>
+
+          {/* Deskripsi */}
+          {deskripsi && (
+            <p className="text-center text-gray-600 text-[11px] mb-1 line-clamp-2 leading-snug group-hover:text-white">
+              {deskripsi}
+            </p>
+          )}
+
+          {/* Pengguna */}
+          {pengguna && (
+            <p className="text-[10px] text-gray-500 italic mb-1 text-center group-hover:text-white">
+              {pengguna}
+            </p>
+          )}
+
+          {/* Badge */}
+          {domain_aplikasi && (
+            <div className="flex justify-center mb-2">
+              <span
+                className={`text-[10px] font-medium px-2.5 py-1 rounded-full border transition-all duration-300 ${getBadgeColor(
+                  domain_aplikasi
+                )}`}
+              >
+                {domain_aplikasi}
+              </span>
+            </div>
+          )}
         </div>
 
-        {/* Nama */}
-        <h3 className="text-center text-[#0E3B8C] text-sm font-semibold mb-1 line-clamp-2 transition-colors duration-300 group-hover:text-white">
-          {nama_aplikasi || "Tanpa Nama"}
-        </h3>
-
-        {/* Deskripsi */}
-        {deskripsi && (
-          <p className="text-center text-gray-600 text-[11px] mb-1 line-clamp-2 leading-snug transition-colors duration-300 group-hover:text-white">
-            {deskripsi}
-          </p>
-        )}
-
-        {/* Pengguna */}
-        {pengguna && (
-          <p className="text-[10px] text-gray-500 italic mb-1 text-center transition-colors duration-300 group-hover:text-white">
-            {pengguna}
-          </p>
-        )}
-
-        {/* Badge */}
-        {domain_aplikasi && (
-          <div className="flex justify-center mb-2">
-            <span
-              className={`text-[10px] font-medium px-2.5 py-1 rounded-full border transition-all duration-300 ${getBadgeColor(
-                domain_aplikasi
-              )}`}
-            >
-              {domain_aplikasi}
-            </span>
-          </div>
-        )}
-
-        {/* No Registrasi */}
-        <div className="text-[10px] text-gray-600 border-t border-[#CFDCF8] w-full text-center pt-1.5 mt-auto transition-colors duration-300 group-hover:text-white">
+        {/* FOOTER - Always bottom */}
+        <div className="text-[10px] text-gray-600 border-t border-[#CFDCF8] w-full text-center pt-1.5 mt-auto group-hover:text-white">
           No. Registrasi: {nomor_registrasi}
         </div>
 
-        {/* Icon */}
+        {/* Icon Button */}
         <motion.div
           className="absolute bottom-2 right-2"
           animate={{ rotate: 0 }}
