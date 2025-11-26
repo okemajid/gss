@@ -53,6 +53,7 @@ export default function CardFeature({
   };
 
   return (
+
     <Link href={url} target="_blank">
      <motion.div
         whileHover={{ y: -6, scale: 1.02 }}
@@ -65,9 +66,12 @@ export default function CardFeature({
           shadow-md hover:shadow-blue-200/60
           transition-all duration-300 cursor-pointer
 
-          w-[200px] md:w-[260px]   /* LEBAR KONSISTEN */
-          h-[300px]                /* TINGGI KONSISTEN */
-          shrink-0                /* AGAR GRID TIDAK MENEKAN WIDTH */
+           
+         w-[260px]
+  h-[300px]
+  flex-none
+  rounded-2xl
+  p-4          
 
           p-4 group
         "
