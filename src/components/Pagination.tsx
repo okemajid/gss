@@ -36,94 +36,94 @@ export default function Pagination({
   const endIndex = Math.min(startIndex + itemsPerPage - 1, totalData);
 
   return (
-    <div className="flex flex-col items-center gap-2 mt-3">
-      
-
+    <div className="flex flex-col items-center gap-2 mt-3 w-full">
       {/* 🔹 Tombol Pagination */}
-      <div className="flex justify-center items-center gap-3">
+      <div className="flex flex-col justify-center mx-auto items-center gap-2 md:flex-row">
         {/* 🔹 Info jumlah data */}
-      <p className="text-sm text-gray-600 mr-20">
-        Menampilkan{" "}
-        <span className="font-medium">{startIndex}</span>–
-        <span className="font-medium">{endIndex}</span> dari{" "}
-        <span className="font-medium">{totalData}</span> data
-      </p>
-        {/* Tombol Prev */}
-        <button
-          onClick={() => onPageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className={`px-3 py-1 rounded-md text-sm font-medium ${
-            currentPage === 1
-              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-              : "bg-blue-600 hover:bg-blue-700 text-white"
-          }`}
-        >
-          Prev
-        </button>
+        <p className="text-sm text-gray-600 mr-3">
+          Menampilkan <span className="font-medium">{startIndex}</span>–
+          <span className="font-medium">{endIndex}</span> dari{" "}
+          <span className="font-medium">{totalData}</span> data
+        </p>
 
-        {/* Jika halaman tidak mulai dari 1 */}
-        {start > 1 && (
-          <>
-            <button
-              onClick={() => onPageChange(1)}
-              className={`px-3 py-1 rounded-md text-sm font-medium transition ${
-                currentPage === 1
-                  ? "bg-blue-600 text-white shadow"
-                  : "bg-white border border-gray-300 hover:bg-blue-50"
-              }`}
-            >
-              1
-            </button>
-            {start > 2 && <span className="px-1 text-gray-500">...</span>}
-          </>
-        )}
-
-        {/* Halaman aktif */}
-        {visiblePages.map((page) => (
+        <div className=" w-[350px] sm:w-[350px] md:w-[380px] mx-auto flex justify-center gap-2 flex-wrap">
+          {/* Tombol Prev */}
           <button
-            key={page}
-            onClick={() => onPageChange(page)}
-            className={`px-3 py-1 rounded-md text-sm font-medium transition ${
-              currentPage === page
-                ? "bg-blue-600 text-white shadow"
-                : "bg-white border border-gray-300 hover:bg-blue-50"
+            onClick={() => onPageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className={`px-3 py-1 rounded-md text-sm font-medium ${
+              currentPage === 1
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700 text-white"
             }`}
           >
-            {page}
+            Prev
           </button>
-        ))}
 
-        {/* Jika tidak berakhir di totalPages */}
-        {end < totalPages && (
-          <>
-            {end < totalPages - 1 && (
-              <span className="px-1 text-gray-500">...</span>
-            )}
+          {/* Jika halaman tidak mulai dari 1 */}
+          {start > 1 && (
+            <>
+              <button
+                onClick={() => onPageChange(1)}
+                className={`px-3 py-1 rounded-md text-sm font-medium transition ${
+                  currentPage === 1
+                    ? "bg-blue-600 text-white shadow"
+                    : "bg-white border border-gray-300 hover:bg-blue-50"
+                }`}
+              >
+                1
+              </button>
+              {start > 2 && <span className="px-1 text-gray-500">...</span>}
+            </>
+          )}
+
+          {/* Halaman aktif */}
+          {visiblePages.map((page) => (
             <button
-              onClick={() => onPageChange(totalPages)}
+              key={page}
+              onClick={() => onPageChange(page)}
               className={`px-3 py-1 rounded-md text-sm font-medium transition ${
-                currentPage === totalPages
+                currentPage === page
                   ? "bg-blue-600 text-white shadow"
                   : "bg-white border border-gray-300 hover:bg-blue-50"
               }`}
             >
-              {totalPages}
+              {page}
             </button>
-          </>
-        )}
+          ))}
 
-        {/* Tombol Next */}
-        <button
-          onClick={() => onPageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className={`px-3 py-1 rounded-md text-sm font-medium ${
-            currentPage === totalPages
-              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-              : "bg-blue-600 hover:bg-blue-700 text-white"
-          }`}
-        >
-          Next
-        </button>
+          {/* Jika tidak berakhir di totalPages */}
+          {end < totalPages && (
+            <>
+              {end < totalPages - 1 && (
+                <span className="px-1 text-gray-500">...</span>
+              )}
+              <button
+                onClick={() => onPageChange(totalPages)}
+                className={`px-3 py-1 rounded-md text-sm font-medium transition ${
+                  currentPage === totalPages
+                    ? "bg-blue-600 text-white shadow"
+                    : "bg-white border border-gray-300 hover:bg-blue-50"
+                }`}
+              >
+                {totalPages}
+              </button>
+            </>
+          )}
+
+          {/* Tombol Next */}
+          <button
+            onClick={() => onPageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className={`px-3 py-1 rounded-md text-sm font-medium ${
+              currentPage === totalPages
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700 text-white"
+            }`}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

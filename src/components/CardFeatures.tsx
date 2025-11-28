@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import {motion} from "framer-motion";
 import Link from "next/link";
 import {
   ArrowUpRight,
@@ -53,11 +53,10 @@ export default function CardFeature({
   };
 
   return (
-
     <Link href={url} target="_blank">
-     <motion.div
-        whileHover={{ y: -6, scale: 1.02 }}
-        transition={{ type: "spring", stiffness: 150, damping: 15 }}
+      <motion.div
+        whileHover={{y: -6, scale: 1.02}}
+        transition={{type: "spring", stiffness: 150, damping: 15}}
         className="
           relative flex flex-col
           rounded-2xl bg-gradient-to-br from-[#EAF3FF] to-[#D9E8FF]
@@ -66,17 +65,21 @@ export default function CardFeature({
           shadow-md hover:shadow-blue-200/60
           transition-all duration-300 cursor-pointer
 
-           
-         w-[260px]
-  h-[300px]
-  flex-none
-  rounded-2xl
-  p-4          
+                  
+        w-[180px]       /* mobile → lebih kecil */
+        h-[240px]       /* mobile → lebih kecil */
 
-          p-4 group
+        sm:w-[220px]    /* tablet kecil */
+        sm:h-[260px]    
+
+        md:w-[260px]    /* desktop → ukuran aslinya */
+        md:h-[300px]
+
+        flex-none
+        rounded-2xl
+        p-4 group
         "
       >
-
         {/* Content wrapper with flex-grow */}
         <div className="flex flex-col flex-grow overflow-hidden">
           {/* Logo */}
@@ -137,9 +140,9 @@ export default function CardFeature({
         {/* Icon Button */}
         <motion.div
           className="absolute bottom-2 right-2"
-          animate={{ rotate: 0 }}
-          whileHover={{ rotate: 45 }}
-          transition={{ type: "spring", stiffness: 250, damping: 15 }}
+          animate={{rotate: 0}}
+          whileHover={{rotate: 45}}
+          transition={{type: "spring", stiffness: 250, damping: 15}}
         >
           <div className="w-7 h-7 flex items-center justify-center rounded-full border-2 border-[#0E3B8C] text-[#0E3B8C] bg-white transition-all duration-300 group-hover:bg-white/20 group-hover:text-white group-hover:border-white shadow-sm">
             <ArrowUpRight size={14} />
