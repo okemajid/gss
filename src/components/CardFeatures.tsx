@@ -64,16 +64,24 @@ export default function CardFeature({
           border border-[#C5DBFF]
           shadow-md hover:shadow-blue-200/60
           transition-all duration-300 cursor-pointer
+        /* ukuran card */
+        w-[170px]          /* mobile */
+        h-[230px]
 
-                  
-        w-[180px]       /* mobile → lebih kecil */
-        h-[240px]       /* mobile → lebih kecil */
+        sm:w-[210px]       /* tablet */
+        sm:h-[260px]
 
-        sm:w-[220px]    /* tablet kecil */
-        sm:h-[260px]    
+        md:w-[210px]       /* desktop / 
+        md:h-[260px]
 
-        md:w-[260px]    /* desktop → ukuran aslinya */
-        md:h-[300px]
+        lg:w-[210px]       /* desktop / 
+        lg:h-[260px]
+
+        xl:w-[230px]       /* desktop / 
+        xl:h-[270px]
+        
+        2xl:w-[260px]       /* desktop / 
+        2xl:h-[300px]
 
         flex-none
         rounded-2xl

@@ -24,10 +24,14 @@ export default function FeatureGrid({features, loading}: Props) {
       className="
         grid
         grid-cols-2
-        sm:grid-cols-[repeat(auto-fill,minmax(260px,1fr))]
-        gap-7
+        sm:grid-cols-[repeat(auto-fill,minmax(170px,1fr))]
+        md:grid-cols-[repeat(auto-fill,minmax(180px,1fr))]
+        lg:grid-cols-[repeat(auto-fill,minmax(220px,1fr))]
+        xl:grid-cols-[repeat(auto-fill,minmax(240px,1fr))]
+        2xl:grid-cols-6
+        gap-9
         w-full
-        px-3 sm:px-4 md:px-8 lg:px-12
+        px-3 sm:px-4 md:px-10 lg:px-12 xl:px-14 2xl:px-12
         py-6
         place-items-center
       "
