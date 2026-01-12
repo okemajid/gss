@@ -121,24 +121,50 @@ export default function StatistikSection({
             )}
           </div>
 
-          {/* Gambar kanan */}
           <div className="flex-[1] flex justify-center items-center md:max-h-[80vh]">
-            <Image
-              src="/images/hero5.png"
-              alt="Ilustrasi Statistik"
-              width={1500}
-              height={1200}
-              className="drop-shadow-2xl object-contain w-[100%] animate-float animate-slow"
-              priority
-            />
-            <Image
-              src="/images/helo.png"
-              alt="Ilustrasi Statistik"
-              width={300}
-              height={100}
-              className="drop-shadow-2xl object-contain w-[100%] animate-float animate-slow"
-              priority
-            />
+            <div className="relative w-[400px] h-[400px] flex items-center justify-center">
+              {/* HERO DI TENGAH */}
+              <div className="relative z-10 animate-float-slow">
+                <Image
+                  src="/images/hero5.png"
+                  alt="Hero"
+                  width={1200}
+                  height={900}
+                  className="w-[420px] drop-shadow-2xl object-contain"
+                  priority
+                />
+              </div>
+
+              {/* ORBIT HELO */}
+              {/* <div className="absolute inset-0 animate-orbit-slow">
+                <div className="absolute top-1/2 left-1/2 orbit-radius-1">
+                  <div className="orbit-counter-slow">
+                    <Image
+                      src="/images/helo.png"
+                      alt="Helo"
+                      width={80}
+                      height={40}
+                      className="drop-shadow-xl object-contain"
+                    />
+                  </div>
+                </div>
+              </div> */}
+
+              {/* ORBIT DISKOMINFO */}
+              {/* <div className="absolute inset-0 animate-orbit-fast">
+                <div className="absolute top-1/2 left-1/2 orbit-radius-2">
+                  <div className="orbit-counter-fast">
+                    <Image
+                      src="/images/diskominfo.png"
+                      alt="Diskominfo"
+                      width={90}
+                      height={40}
+                      className="drop-shadow-xl object-contain"
+                    />
+                  </div>
+                </div>
+              </div> */}
+            </div>
           </div>
         </div>
       </div>

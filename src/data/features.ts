@@ -11,10 +11,11 @@ export interface Feature {
   url: string;
 }
 
-const BASE_URL =
-  "https://situ.ciamiskab.go.id/api/v3/simpatik/katalog-aplikasi";
-const TOKEN =
-  "Bearer 5|6Gd8UP7OfZPQgYbQL03wDeearDauxRkOP7LgGjUDb146b909";
+const API_BASE_URL = process.env.SIMPATIK_API_BASE_URL!;
+const API_TOKEN = process.env.SIMPATIK_API_TOKEN!;
+
+const KATALOG_URL = `${API_BASE_URL}/katalog-aplikasi`;
+const KATEGORI_URL = `${API_BASE_URL}/kategori-katalog-aplikasi`;
 
 /**
  * 🔹 Ambil daftar aplikasi dari API.
@@ -23,63 +24,53 @@ const TOKEN =
  */
 export async function getFeatures(kategoriId?: number): Promise<Feature[]> {
   try {
-    // ✅ Kalau kategori = 0 → ambil semua kategori dulu
+    // ==============================
+    // AMBIL SEMUA KATEGORI
+    // ==============================
     if (!kategoriId || kategoriId === 0) {
       console.log("🌀 Mengambil SEMUA aplikasi dari semua kategori...");
 
-      // Ambil semua kategori
-      const kategoriRes = await fetch(
-        "https://situ.ciamiskab.go.id/api/v3/simpatik/kategori-katalog-aplikasi",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: TOKEN,
-          },
-          cache: "no-store",
-        }
-      );
+      const kategoriRes = await fetch(KATEGORI_URL, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: API_TOKEN,
+        },
+        cache: "no-store",
+      });
 
       const kategoriJson = await kategoriRes.json();
-      const kategoriList: number[] = kategoriJson?.data?.map((k: any) => k.id) ?? [];
+      const kategoriList: number[] =
+        kategoriJson?.data?.map((k: any) => k.id) ?? [];
 
-      // Ambil semua fitur dari tiap kategori paralel
       const allPromises = kategoriList.map((id) =>
-        fetch(`${BASE_URL}?kategori=${id}`, {
+        fetch(`${KATALOG_URL}?kategori=${id}`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: TOKEN,
+            Authorization: API_TOKEN,
           },
           cache: "no-store",
         })
-          .then((r) => (r.ok ? r.json() : { data: [] }))
-          .catch(() => ({ data: [] }))
+          .then((r) => (r.ok ? r.json() : {data: []}))
+          .catch(() => ({data: []}))
       );
 
       const allResults = await Promise.all(allPromises);
 
-      // Gabungkan semua hasil
       const allData = allResults.flatMap((res) =>
-        (res.data ?? []).map((item: any) => ({
-          id: String(item.id),
-          nomor_registrasi: item.nomor_registrasi || "-",
-          nama_aplikasi: item.nama_aplikasi || "Tidak diketahui",
-          domain_aplikasi: item.domain_aplikasi || "-",
-          kategori: item.kategori?.name || "Umum",
-          pengguna: item.pengguna || "-",
-          deskripsi: item.deskripsi || "",
-          url: item.url || "#",
-        }))
+        (res.data ?? []).map((item: any) => mapFeature(item))
       );
 
       console.log(`✅ Total data semua kategori: ${allData.length}`);
       return allData;
     }
 
-    // ✅ Kalau kategori spesifik
-    const res = await fetch(`${BASE_URL}?kategori=${kategoriId}`, {
+    // ==============================
+    // KATEGORI SPESIFIK
+    // ==============================
+    const res = await fetch(`${KATALOG_URL}?kategori=${kategoriId}`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: TOKEN,
+        Authorization: API_TOKEN,
       },
       cache: "no-store",
     });
@@ -87,46 +78,28 @@ export async function getFeatures(kategoriId?: number): Promise<Feature[]> {
     if (!res.ok) throw new Error(`Gagal fetch kategori ${kategoriId}`);
 
     const json = await res.json();
-    const items = json.data ?? [];
-
-    return items.map((item: any) => ({
-      id: String(item.id),
-      nomor_registrasi: item.nomor_registrasi || "-",
-      nama_aplikasi: item.nama_aplikasi || "Tidak diketahui",
-      domain_aplikasi: item.domain_aplikasi || "-",
-      kategori: item.kategori?.name || "Umum",
-      pengguna: item.pengguna || "-",
-      deskripsi: item.deskripsi || "",
-      url: item.url || "#",
-    }));
+    return (json.data ?? []).map(mapFeature);
   } catch (error) {
     console.error("❌ Error fetching features:", error);
     return [];
   }
 }
 
-/**
- * 🔹 Ambil daftar kategori dari API
- */
-export async function getCategories(): Promise<{ id: number; name: string }[]> {
+export async function getCategories(): Promise<{id: number; name: string}[]> {
   try {
-    const res = await fetch(
-      "https://situ.ciamiskab.go.id/api/v3/simpatik/kategori-katalog-aplikasi",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: TOKEN,
-        },
-        cache: "no-store",
-      }
-    );
+    const res = await fetch(KATEGORI_URL, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: API_TOKEN,
+      },
+      cache: "no-store",
+    });
 
     const json = await res.json();
 
     if (json.success && Array.isArray(json.data)) {
-      // tambahkan kategori “All” di paling atas
       return [
-        { id: 0, name: "All" },
+        {id: 0, name: "All"},
         ...json.data.map((item: any) => ({
           id: item.id,
           name: item.name,
@@ -134,9 +107,21 @@ export async function getCategories(): Promise<{ id: number; name: string }[]> {
       ];
     }
 
-    return [{ id: 0, name: "All" }];
+    return [{id: 0, name: "All"}];
   } catch (error) {
     console.error("❌ Error fetching categories:", error);
-    return [{ id: 0, name: "All" }];
+    return [{id: 0, name: "All"}];
   }
+}
+function mapFeature(item: any): Feature {
+  return {
+    id: String(item.id),
+    nomor_registrasi: item.nomor_registrasi || "-",
+    nama_aplikasi: item.nama_aplikasi || "Tidak diketahui",
+    domain_aplikasi: item.domain_aplikasi || "-",
+    kategori: item.kategori?.name || "Umum",
+    pengguna: item.pengguna || "-",
+    deskripsi: item.deskripsi || "",
+    url: item.url || "#",
+  };
 }

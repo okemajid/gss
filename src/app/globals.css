@@ -67,3 +67,39 @@ body {
 .animate-float-slow {
   animation: floatSlow 4.5s ease-in-out infinite;
 }
+
+@keyframes orbit {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ROTASI POSISI (ORBIT) */
+.animate-orbit-slow {
+  animation: orbit 9s linear infinite;
+}
+
+.animate-orbit-fast {
+  animation: orbit 12s linear infinite reverse;
+}
+
+/* JARAK DARI PUSAT */
+.orbit-radius-1 {
+  transform: translate(-50%, -50%) translateX(150px);
+}
+
+.orbit-radius-2 {
+  transform: translate(-50%, -50%) translateX(160px);
+}
+
+/* COUNTER ROTATION → BIAR ICON TETAP LANDSCAPE */
+.orbit-counter-slow {
+  animation: orbit 9s linear infinite reverse;
+}
+
+.orbit-counter-fast {
+  animation: orbit 12s linear infinite;
+}
