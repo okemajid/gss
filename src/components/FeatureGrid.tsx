@@ -2,13 +2,15 @@
 
 import CardFeature from "./CardFeatures";
 import {Feature} from "../data/features";
+import {type AppDetailData} from "@/components/DetailCard";
 
 interface Props {
   features: Feature[];
   loading: boolean;
+  onDetail?: (data: AppDetailData) => void;
 }
 
-export default function FeatureGrid({features, loading}: Props) {
+export default function FeatureGrid({features, loading, onDetail}: Props) {
   if (loading)
     return <p className="text-gray-300 text-center">Loading data...</p>;
 
@@ -36,8 +38,8 @@ export default function FeatureGrid({features, loading}: Props) {
         place-items-center
       "
     >
-      {limitedFeatures.map((f, index) => (
-        <CardFeature key={index} {...f} />
+      {limitedFeatures.map((f) => (
+        <CardFeature key={f.id} {...f} onDetail={onDetail} />
       ))}
     </div>
   );

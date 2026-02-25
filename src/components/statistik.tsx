@@ -1,7 +1,9 @@
 "use client";
 
 import {useEffect, useState} from "react";
-import Image from "next/image";
+import {TrendingUp, Cloud, Monitor, Smartphone, Globe} from "lucide-react";
+import {motion} from "framer-motion";
+import {StatisticsInfographic} from "./StatisticsInfographic";
 import {getCategories, getFeatures} from "@/data/features";
 
 interface StatistikItem {
@@ -9,21 +11,11 @@ interface StatistikItem {
   name: string;
   total: number;
 }
-// ✅ Tambahkan definisi props di sini
-interface StatistikSectionProps {
-  asPopup?: boolean;
-  onClose?: () => void;
-}
 
-// ✅ Terapkan props di sini ⬇️
-export default function StatistikSection({
-  asPopup = false,
-  onClose,
-}: StatistikSectionProps) {
+export default function StatistikSection() {
   const [statistik, setStatistik] = useState<StatistikItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [activePopup, setActivePopup] = useState<StatistikItem | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const fetchStatistik = async () => {
@@ -33,243 +25,138 @@ export default function StatistikSection({
         kategoriList.map(async (cat) => {
           const fitur = await getFeatures(cat.id);
           return {id: cat.id, name: cat.name, total: fitur.length};
-        })
+        }),
       );
       setStatistik(results);
       setLoading(false);
     };
     fetchStatistik();
-
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const colors = [
-    {bg: "bg-green-100", text: "text-green-800"},
-    {bg: "bg-yellow-100", text: "text-yellow-800"},
-    {bg: "bg-blue-100", text: "text-blue-800"},
-    {bg: "bg-cyan-100", text: "text-cyan-800"},
-    {bg: "bg-indigo-100", text: "text-indigo-800"},
-    {bg: "bg-pink-100", text: "text-pink-800"},
-  ];
+  const totalAll =
+    statistik.find((s) => s.name.toLowerCase() === "all")?.total ?? 0;
 
-  // ===========================================================
-  // 🔹 Versi DESKTOP
-  // ===========================================================
-  const renderDesktop = () => (
-    <section
-      id="statistik"
-      className="relative bg-gradient-to-r from-[#0E3B8C] to-[#08225C] overflow-hidden rounded-4xl py-14"
-    >
-      {/* Judul */}
-      <h2 className="text-white text-xl font-bold mb-6 text-center">
-        Statistik Aplikasi
-      </h2>
+  const getIcon = (name: string) => {
+    const n = name.toLowerCase();
+    if (n.includes("cloud")) return <Cloud className="text-sky-500" />;
+    if (n.includes("desktop")) return <Monitor className="text-amber-500" />;
+    if (n.includes("mobile")) return <Smartphone className="text-indigo-500" />;
+    if (n.includes("web")) return <Globe className="text-cyan-500" />;
+    return <TrendingUp className="text-blue-500" />;
+  };
 
-      <div className="w-full max-w-[1600px] mx-auto px-12">
-        <div className="flex flex-row items-center justify-between gap-20">
-          {/* Grid kiri */}
-          <div className="flex-[1.5] grid grid-cols-2 gap-8 w-full">
-            {loading ? (
-              <p className="col-span-full text-center text-white text-lg">
-                Memuat data statistik...
-              </p>
-            ) : (
-              <>
-                {/* Card "All" */}
-                {statistik
-                  .filter((item) => item.name.toLowerCase() === "all")
-                  .map((item, i) => (
-                    <button
-                      key={item.id}
-                      onClick={() => setActivePopup(item)}
-                      className={`col-span-2 rounded-2xl ${
-                        colors[i % colors.length].bg
-                      } ${colors[i % colors.length].text}
-                        flex flex-col justify-center items-center py-6 px-5 shadow-xl hover:scale-105 transition-transform`}
-                    >
-                      <p className="text-7xl font-extrabold mb-3">
+  if (loading) {
+    return (
+      <div className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 rounded-3xl p-8 animate-pulse" />
+    );
+  }
+
+  return (
+    <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 rounded-3xl p-8 shadow-2xl overflow-hidden">
+      {/* Blur bg */}
+      <div className="absolute top-0 right-0 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl" />
+
+      <div className="relative z-10">
+        {/* TITLE */}
+        <div className="flex items-center gap-3 mb-8">
+          <TrendingUp className="w-8 h-8 text-blue-300" />
+          <h2 className="text-white text-xl font-bold">Statistik Aplikasi</h2>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8 items-center">
+          {/* LEFT CARDS */}
+          <div className="space-y-5">
+            {/* TOTAL */}
+            <div
+              onClick={() =>
+                setActivePopup({
+                  id: 0,
+                  name: "Total Aplikasi",
+                  total: totalAll,
+                })
+              }
+              className="bg-gradient-to-br from-cyan-100 to-blue-100 rounded-2xl p-6 shadow-lg hover:-translate-y-1 transition cursor-pointer"
+            >
+              <div className="text-center flex flex-col items-center gap-2">
+                <div className="p-3 bg-blue-600 text-white rounded-xl shadow">
+                  <TrendingUp />
+                </div>
+                <p className="text-5xl font-bold text-blue-900">{totalAll}</p>
+                <p className="text-blue-700 font-medium">Total Aplikasi</p>
+              </div>
+            </div>
+
+            {/* CATEGORY GRID */}
+            <div className="grid grid-cols-2 gap-4">
+              {statistik
+                .filter((s) => s.name.toLowerCase() !== "all")
+                .map((item) => (
+                  <div
+                    key={item.id}
+                    onClick={() => setActivePopup(item)}
+                    className="bg-white/95 rounded-2xl p-5 shadow-lg hover:-translate-y-1 transition cursor-pointer"
+                  >
+                    <div className="flex flex-col items-center gap-2 text-center">
+                      <div className="p-2 rounded-lg bg-gray-100">
+                        {getIcon(item.name)}
+                      </div>
+                      <p className="text-4xl font-bold text-blue-900">
                         {item.total}
                       </p>
-                      <p className="text-lg font-semibold">Total Aplikasi</p>
-                    </button>
-                  ))}
-
-                {/* Card lainnya */}
-                {statistik
-                  .filter((item) => item.name.toLowerCase() !== "all")
-                  .map((item, i) => (
-                    <button
-                      key={item.id}
-                      onClick={() => setActivePopup(item)}
-                      className={`rounded-2xl ${colors[i % colors.length].bg} ${
-                        colors[i % colors.length].text
-                      }
-                        flex flex-col justify-center items-center py-5 px-4 shadow-lg hover:scale-105 transition-transform`}
-                    >
-                      <p className="text-6xl font-extrabold mb-2">
-                        {item.total}
-                      </p>
-                      <p className="text-base font-semibold text-center">
+                      <p className="text-sm text-blue-700 font-medium">
                         {item.name}
                       </p>
-                    </button>
-                  ))}
-              </>
-            )}
-          </div>
-
-          <div className="flex-[1] flex justify-center items-center md:max-h-[80vh]">
-            <div className="relative w-[400px] h-[400px] flex items-center justify-center">
-              {/* HERO DI TENGAH */}
-              <div className="relative z-10 animate-float-slow">
-                <Image
-                  src="/images/hero5.png"
-                  alt="Hero"
-                  width={1200}
-                  height={900}
-                  className="w-[420px] drop-shadow-2xl object-contain"
-                  priority
-                />
-              </div>
-
-              {/* ORBIT HELO */}
-              {/* <div className="absolute inset-0 animate-orbit-slow">
-                <div className="absolute top-1/2 left-1/2 orbit-radius-1">
-                  <div className="orbit-counter-slow">
-                    <Image
-                      src="/images/helo.png"
-                      alt="Helo"
-                      width={80}
-                      height={40}
-                      className="drop-shadow-xl object-contain"
-                    />
+                    </div>
                   </div>
-                </div>
-              </div> */}
-
-              {/* ORBIT DISKOMINFO */}
-              {/* <div className="absolute inset-0 animate-orbit-fast">
-                <div className="absolute top-1/2 left-1/2 orbit-radius-2">
-                  <div className="orbit-counter-fast">
-                    <Image
-                      src="/images/diskominfo.png"
-                      alt="Diskominfo"
-                      width={90}
-                      height={40}
-                      className="drop-shadow-xl object-contain"
-                    />
-                  </div>
-                </div>
-              </div> */}
+                ))}
             </div>
           </div>
+
+          {/* RIGHT INFOGRAPHIC */}
+          <div className="hidden md:flex justify-center">
+            <motion.div
+              initial={{opacity: 0, scale: 0.85}}
+              animate={{opacity: 1, scale: 1}}
+              transition={{duration: 0.6}}
+            >
+              <StatisticsInfographic />
+            </motion.div>
+          </div>
         </div>
+
+        {/* LAST UPDATE */}
+        <p className="text-center text-blue-300 text-sm mt-6">
+          Terakhir diperbarui:{" "}
+          {new Date().toLocaleDateString("id-ID", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </p>
       </div>
 
-      {renderPopup()}
-    </section>
-  );
-
-  // ===========================================================
-  // 🔹 Versi MOBILE
-  // ===========================================================
-  const renderMobile = () => (
-    <section
-      id="statistik"
-      className="relative bg-gradient-to-r from-[#0E3B8C] to-[#08225C] 
-             py-5 px-3 rounded-3xl overflow-hidden 
-             flex flex-col justify-center items-center"
-    >
-      {/* Judul */}
-      <h2 className="text-white text-xl font-bold mb-6 text-center">
-        Statistik Aplikasi
-      </h2>
-
-      {/* Grid Card */}
-      <div className="grid grid-cols-2 gap-3 place-items-center w-full max-w-xs">
-        {loading ? (
-          <p className="col-span-2 text-center text-white text-lg">
-            Memuat data statistik...
-          </p>
-        ) : (
-          <>
-            {statistik.map((item, i) => {
-              const isAll = item.name.toLowerCase() === "all";
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setActivePopup(item)}
-                  className={`
-                  rounded-2xl ${colors[i % colors.length].bg} ${
-                    colors[i % colors.length].text
-                  }
-                  flex flex-col justify-center items-center 
-                  ${isAll ? "col-span-2 py-2 md:py-3" : "py-3 md:py-4"} 
-                  px-3 w-full shadow-md hover:scale-105 transition-transform
-                `}
-                >
-                  <p
-                    className={`font-extrabold mb-1 ${
-                      isAll ? "text-5xl md:text-7xl" : "text-3xl md:text-5xl"
-                    }`}
-                  >
-                    {item.total}
-                  </p>
-                  <p
-                    className={`font-semibold text-center ${
-                      isAll ? "text-sm md:text-lg" : "text-xs md:text-base"
-                    }`}
-                  >
-                    {isAll ? "Total Aplikasi" : item.name}
-                  </p>
-                </button>
-              );
-            })}
-          </>
-        )}
-      </div>
-
-      {/* Gambar */}
-      <div className="flex justify-center mt-4">
-        <Image
-          src="/images/hero4.png"
-          alt="Statistik"
-          width={200}
-          height={100}
-          className="object-contain drop-shadow-lg w-[60%]"
-          priority
-        />
-      </div>
-
-      {/* Popup */}
+      {/* POPUP */}
       {activePopup && (
         <>
-          {/* Overlay — klik di luar popup untuk keluar */}
           <div
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
             onClick={() => setActivePopup(null)}
           />
-
-          {/* Popup Card */}
-          <div
-            className="fixed inset-0 z-50 flex justify-center items-center px-6"
-            onClick={(e) => e.stopPropagation()} // agar klik di dalam popup tidak menutup
-          >
-            <div className="bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 relative">
+          <div className="fixed inset-0 z-50 flex justify-center items-center px-6">
+            <div className="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6 relative">
               <button
                 onClick={() => setActivePopup(null)}
-                className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-2xl font-bold"
+                className="absolute top-3 right-3 text-gray-500 hover:text-red-500"
               >
                 ✕
               </button>
-
-              <p className="text-5xl font-extrabold mb-3 text-center text-gray-800">
+              <p className="text-5xl font-bold text-center text-gray-800 mb-2">
                 {activePopup.total}
               </p>
-              <p className="text-lg font-semibold text-center text-gray-600">
+              <p className="text-center text-gray-600 font-semibold">
                 {activePopup.name}
               </p>
             </div>
@@ -278,43 +165,4 @@ export default function StatistikSection({
       )}
     </section>
   );
-
-  // ===========================================================
-  // 🔹 Popup Komponen (dipakai di kedua versi)
-  // ===========================================================
-  const renderPopup = () =>
-    activePopup && (
-      <>
-        {/* Overlay — klik di luar popup untuk keluar */}
-        <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
-          onClick={() => setActivePopup(null)}
-        />
-        {/* Popup Card */}
-        <div
-          className="fixed inset-0 z-50 flex justify-center items-center px-6"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6 relative">
-            <button
-              onClick={() => setActivePopup(null)}
-              className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-xl"
-            >
-              ✕
-            </button>
-            <p className="text-5xl font-extrabold mb-3 text-center text-gray-800">
-              {activePopup.total}
-            </p>
-            <p className="text-lg font-semibold text-center text-gray-600">
-              {activePopup.name}
-            </p>
-          </div>
-        </div>
-      </>
-    );
-
-  // ===========================================================
-  // 🔹 Render Final (deteksi mobile/desktop)
-  // ===========================================================
-  return isMobile ? renderMobile() : renderDesktop();
 }

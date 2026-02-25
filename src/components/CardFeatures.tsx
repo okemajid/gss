@@ -1,16 +1,13 @@
 "use client";
 
 import {motion} from "framer-motion";
-import React, {useState} from "react";
 import {
-  ArrowUpRight,
-  CloudCogIcon,
-  RouterIcon,
-  SquareCodeIcon,
-  Globe,
+  Star,
+  ExternalLink,
+  Eye,
 } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import {type AppDetailData} from "@/components/DetailCard";
 
 interface CardFeatureProps {
   nomor_registrasi: string;
@@ -21,6 +18,71 @@ interface CardFeatureProps {
   url?: string;
   logo?: string;
   categories?: string;
+  kategori?: string;
+  onDetail?: (data: AppDetailData) => void;
+}
+
+type CategoryTheme = {
+  gradient: string;
+  accent: string;
+};
+
+function getCategoryTheme(categoryRaw: string): CategoryTheme {
+  const category = categoryRaw.toLowerCase();
+
+  if (category.includes("kesehatan")) {
+    return {
+      gradient: "from-rose-100 via-pink-100 to-orange-100",
+      accent: "bg-rose-300/40",
+    };
+  }
+
+  if (category.includes("pendidikan")) {
+    return {
+      gradient: "from-indigo-100 via-blue-100 to-sky-100",
+      accent: "bg-indigo-300/40",
+    };
+  }
+
+  if (category.includes("keuangan") || category.includes("pajak")) {
+    return {
+      gradient: "from-amber-100 via-orange-100 to-yellow-100",
+      accent: "bg-amber-300/40",
+    };
+  }
+
+  if (category.includes("keamanan") || category.includes("aduan")) {
+    return {
+      gradient: "from-cyan-100 via-sky-100 to-blue-100",
+      accent: "bg-cyan-300/40",
+    };
+  }
+
+  if (category.includes("data") || category.includes("statistik")) {
+    return {
+      gradient: "from-teal-100 via-emerald-100 to-green-100",
+      accent: "bg-emerald-300/40",
+    };
+  }
+
+  if (category.includes("teknologi") || category.includes("digital")) {
+    return {
+      gradient: "from-violet-100 via-fuchsia-100 to-indigo-100",
+      accent: "bg-violet-300/40",
+    };
+  }
+
+  if (category.includes("informasi") || category.includes("publikasi")) {
+    return {
+      gradient: "from-sky-100 via-cyan-100 to-blue-100",
+      accent: "bg-sky-300/40",
+    };
+  }
+
+  return {
+    gradient: "from-blue-100 via-slate-100 to-indigo-100",
+    accent: "bg-blue-300/40",
+  };
 }
 
 export default function CardFeature(props: CardFeatureProps) {
@@ -30,247 +92,166 @@ export default function CardFeature(props: CardFeatureProps) {
     nama_aplikasi,
     pengguna,
     deskripsi,
-    url = "#",
-    logo = "/images/ciamis.svg",
+    url,
+    logo,
     categories,
+    kategori,
+    onDetail,
   } = props;
 
-  const [open, setOpen] = useState(false);
+  const currentCategory = categories ?? kategori ?? "";
+  const categoryTheme = getCategoryTheme(currentCategory || "umum");
+  const featured = currentCategory.toLowerCase() === "unggulan";
+  const safeUrl =
+    url && url.startsWith("http") ? url : url ? `https://${url}` : null;
 
-  const getBadgeColor = (domain?: string) => {
-    switch (domain?.toLowerCase()) {
-      case "aplikasi khusus":
-        return "bg-green-100 text-green-700 border-green-300 group-hover:bg-green-600 group-hover:text-white";
-      case "aplikasi umum":
-        return "bg-orange-100 text-orange-700 border-orange-300 group-hover:bg-orange-600 group-hover:text-white";
-      default:
-        return "bg-[#DBE8FF] text-[#0E3B8C] border-[#C8DBFF] group-hover:bg-[#0E3B8C] group-hover:text-white";
-    }
-  };
-
-  const getDefaultIcon = (domain?: string) => {
-    const lower = domain?.toLowerCase() || "";
-    if (lower.includes("cloud"))
-      return <CloudCogIcon size={26} className="text-[#0E3B8C]" />;
-    if (lower.includes("desktop"))
-      return <SquareCodeIcon size={26} className="text-[#0E3B8C]" />;
-    if (lower.includes("mobile"))
-      return <RouterIcon size={26} className="text-[#0E3B8C]" />;
-    return <Globe size={26} className="text-[#0E3B8C]" />;
+  const payload: AppDetailData = {
+    nomor_registrasi,
+    domain_aplikasi: domain_aplikasi ?? "-",
+    nama_aplikasi: nama_aplikasi ?? "Tanpa Nama",
+    pengguna: pengguna ?? "-",
+    deskripsi: deskripsi ?? "Deskripsi belum tersedia.",
+    url: safeUrl ?? "",
+    logo,
+    kategori: currentCategory || "Umum",
   };
 
   return (
-    <>
-      {/* CARD */}
-      <motion.div
-        onClick={() => setOpen(true)}
-        whileTap={{scale: 0.95}}
-        whileHover={{y: -6, scale: 1.02}}
-        transition={{type: "spring", stiffness: 150, damping: 15}}
-        className="
-          relative flex flex-col
-          rounded-2xl bg-gradient-to-br from-[#EAF3FF] to-[#D9E8FF]
-          hover:from-[#08225C]/90 hover:to-[#0E3B8C]/90
-          border border-[#C5DBFF]
-          shadow-md hover:shadow-blue-200/60
-          transition-all duration-300 cursor-pointer
-        /* ukuran card */
-        w-[170px]          /* mobile */
-        h-[230px]
-
-        sm:w-[210px]       /* tablet */
-        sm:h-[260px]
-
-        md:w-[210px]       /* desktop / 
-        md:h-[260px]
-
-        lg:w-[210px]       /* desktop / 
-        lg:h-[260px]
-
-        xl:w-[230px]       /* desktop / 
-        xl:h-[270px]
-        
-        2xl:w-[260px]       /* desktop / 
-        2xl:h-[300px]
-
-        flex-none
-        rounded-2xl
-        p-4 group
-        "
+    <motion.div
+      whileHover={{y: -6}}
+      whileTap={{scale: 0.985}}
+      transition={{duration: 0.2}}
+      className="group w-[260px] overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-sm hover:border-blue-300 hover:shadow-xl hover:shadow-blue-500/20"
+    >
+      <div
+        className={`relative flex h-36 items-center justify-center bg-gradient-to-br ${logo ? "from-blue-100 to-blue-50" : categoryTheme.gradient}`}
       >
-        <div className="flex flex-col flex-grow overflow-hidden">
-          {/* Logo */}
-          <div className="flex justify-center mb-3">
-            <div className="bg-white p-2.5 rounded-xl shadow-sm border border-[#E0EAFF] flex items-center justify-center w-[45px] h-[45px]">
-              {logo ? (
-                <Image
-                  src={logo}
-                  alt={nama_aplikasi || "Logo"}
-                  width={40}
-                  height={40}
-                  className="rounded-md object-contain"
-                />
-              ) : (
-                getDefaultIcon(domain_aplikasi)
-              )}
-            </div>
-          </div>
-
-          {/* Nama */}
-          <h3 className="text-center text-[#0E3B8C] text-sm font-semibold mb-1 line-clamp-2 group-hover:text-white">
-            {nama_aplikasi || "Tanpa Nama"}
-          </h3>
-
-          {/* Deskripsi */}
-          {deskripsi && (
-            <p className="text-center text-gray-600 text-[11px] mb-1 line-clamp-2 leading-snug group-hover:text-white">
-              {deskripsi}
-            </p>
-          )}
-
-          {/* Pengguna */}
-          {pengguna && (
-            <p className="text-[10px] text-gray-500 italic mb-1 text-center group-hover:text-white">
-              {pengguna}
-            </p>
-          )}
-
-          {/* Badge */}
-          {domain_aplikasi && (
-            <div className="flex justify-center mb-2">
-              <span
-                className={`text-[10px] font-medium px-2.5 py-1 rounded-full border transition-all duration-300 ${getBadgeColor(
-                  domain_aplikasi
-                )}`}
-              >
-                {domain_aplikasi}
-              </span>
-            </div>
-          )}
-        </div>
-        {/* Footer */}
-        <div className="text-[10px] text-gray-600 border-t border-[#CFDCF8] w-full text-center pt-1.5 mt-auto group-hover:text-white">
-          No. Registrasi: {nomor_registrasi}
-        </div>
-
-        {/* Arrow */}
-        <div className="absolute bottom-2 right-2">
-          <div className="w-7 h-7 flex items-center justify-center rounded-full border-2 border-[#0E3B8C] text-[#0E3B8C] bg-white transition-all duration-300 group-hover:bg-white/20 group-hover:text-white group-hover:border-white shadow-sm">
-            <ArrowUpRight size={14} />
-          </div>
-        </div>
-      </motion.div>
-
-      {/* MODAL */}
-      {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="relative w-full max-w-6xl bg-white rounded-2xl shadow-xl overflow-hidden">
-            {/* CLOSE */}
-            <button
-              onClick={() => setOpen(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-700"
+        {logo ? (
+          <Image
+            src={logo}
+            alt={nama_aplikasi || "logo"}
+            width={70}
+            height={70}
+            className="object-contain transition-transform duration-300 group-hover:scale-110"
+          />
+        ) : (
+          <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
+            <motion.div
+              animate={{x: [0, 24, 0], y: [0, -10, 0]}}
+              transition={{duration: 7, repeat: Infinity, ease: "easeInOut"}}
+              className={`absolute -left-8 -top-8 h-28 w-28 rounded-full blur-xl ${categoryTheme.accent}`}
+            />
+            <motion.div
+              animate={{x: [0, -20, 0], y: [0, 10, 0]}}
+              transition={{duration: 8, repeat: Infinity, ease: "easeInOut"}}
+              className="absolute -bottom-10 -right-8 h-32 w-32 rounded-full bg-white/35 blur-2xl"
+            />
+            <motion.div
+              animate={{rotate: 360}}
+              transition={{duration: 16, repeat: Infinity, ease: "linear"}}
+              className="absolute h-24 w-24 rounded-full border border-white/45 border-dashed"
+            />
+            <motion.div
+              animate={{rotate: -360}}
+              transition={{duration: 22, repeat: Infinity, ease: "linear"}}
+              className="absolute h-36 w-36 rounded-full border border-white/30"
+            />
+            <motion.div
+              animate={{opacity: [0.3, 0.7, 0.3], scale: [1, 1.06, 1]}}
+              transition={{duration: 4.5, repeat: Infinity, ease: "easeInOut"}}
+              className="absolute inset-x-6 bottom-5 h-7 rounded-full bg-white/40 blur-md"
+            />
+            <svg
+              className="absolute inset-0 h-full w-full opacity-45"
+              viewBox="0 0 260 140"
+              fill="none"
+              aria-hidden="true"
             >
-              ✕
+              <motion.path
+                d="M0 96C34 84 52 64 81 66C114 69 126 101 158 102C191 103 211 79 260 71"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="round"
+                initial={{pathLength: 0.2, opacity: 0.2}}
+                animate={{pathLength: [0.2, 1, 0.2], opacity: [0.2, 0.6, 0.2]}}
+                transition={{duration: 5.5, repeat: Infinity, ease: "easeInOut"}}
+              />
+              <motion.path
+                d="M0 53C23 41 45 39 70 47C91 54 109 72 139 74C171 76 192 58 260 41"
+                stroke="white"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                initial={{pathLength: 0.1, opacity: 0.15}}
+                animate={{pathLength: [0.1, 0.9, 0.1], opacity: [0.15, 0.45, 0.15]}}
+                transition={{duration: 6.2, repeat: Infinity, ease: "easeInOut", delay: 0.4}}
+              />
+            </svg>
+          </div>
+        )}
+
+        {featured && (
+          <div className="absolute right-3 top-3 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 px-2 py-1 text-[10px] text-white">
+            Unggulan
+          </div>
+        )}
+      </div>
+
+      <div className="p-5">
+        <h3 className="line-clamp-1 font-semibold text-blue-900">
+          {nama_aplikasi || "Tanpa Nama"}
+        </h3>
+
+        {domain_aplikasi && (
+          <span className="mt-1 inline-block rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 text-xs text-blue-700">
+            {domain_aplikasi}
+          </span>
+        )}
+
+        {pengguna && (
+          <p className="mt-2 text-xs text-gray-500">
+            Pengguna: <span className="font-medium">{pengguna}</span>
+          </p>
+        )}
+
+        <p className="mt-3 mb-4 line-clamp-2 text-sm text-gray-600">
+          {deskripsi || "-"}
+        </p>
+
+        <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center gap-1 text-amber-500">
+            <Star className="h-4 w-4 fill-current" />
+            <span className="text-gray-700">4.5</span>
+          </div>
+
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onDetail?.(payload);
+              }}
+              className="inline-flex items-center gap-1 rounded-lg border border-blue-200 px-3 py-1.5 text-xs text-blue-700 transition hover:bg-blue-50"
+            >
+              <Eye size={14} />
+              Detail
             </button>
 
-            <div className="flex">
-              {/* ================= LEFT SIDEBAR ================= */}
-              <div className="w-[350px] bg-[#EFF6FF] p-6 border-r">
-                {/* Logo */}
-                <div className="flex justify-center mb-4">
-                  <Image
-                    src={logo}
-                    alt={nama_aplikasi || "Logo"}
-                    width={64}
-                    height={64}
-                    className="object-contain"
-                  />
-                </div>
-
-                {/* Nama */}
-                <h2 className="text-center font-semibold text-sm mb-4 leading-snug">
-                  {nama_aplikasi}
-                </h2>
-
-                {/* Button */}
-                <Link
-                  href={url}
-                  target="_blank"
-                  className="block text-center bg-blue-600 border-blue-600 hover:bg-[#0E3B8C]/90
-                       text-white py-2 rounded-lg text-sm font-medium"
-                >
-                  Kunjungi
-                </Link>
-
-                {/* Meta */}
-                <div className="mt-6 space-y-3 text-xs text-gray-700">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">Kategori</span>
-                    <span className="flex items-center ml-13">: </span>{" "}
-                    {nama_aplikasi}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">Nomor Registrasi</span>
-                    <span className="flex items-center ml-1">: </span>{" "}
-                    {nomor_registrasi}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">Domain Aplikasi</span>
-                    <span className="flex items-center ml-3">: </span>{" "}
-                    {domain_aplikasi}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">Nama Pengguna</span>
-                    <span className="flex items-center ml-2">: </span>{" "}
-                    {pengguna}
-                  </div>
-                </div>
-              </div>
-
-              {/* ================= RIGHT CONTENT ================= */}
-              <div className="flex-1 p-6 space-y-6">
-                {/* Deskripsi */}
-                <div>
-                  <h3 className="font-semibold text-sm mb-2">
-                    Deskripsi Aplikasi
-                  </h3>
-                  <div className="bg-gray-100 rounded-xl p-4 text-sm text-gray-700">
-                    {deskripsi}
-                  </div>
-                </div>
-
-                {/* Fitur */}
-                <div>
-                  <h3 className="font-semibold text-sm mb-2">Fitur</h3>
-                  <div className="bg-gray-100 rounded-xl p-4 text-sm max-h-[120px] overflow-y-auto">
-                    <ol className="list-decimal pl-5 space-y-1">
-                      <li>Data bangunan milik Pemerintah</li>
-                      <li>Pengajuan rehab</li>
-                      <li>Laporan hasil pelaksanaan rehab</li>
-                    </ol>
-                  </div>
-                </div>
-
-                {/* TABLE INFO */}
-                <div className="grid grid-cols-3 text-sm border-t pt-4">
-                  <div>
-                    <p className="font-semibold">Basis</p>
-                    <p>Website</p>
-                  </div>
-                  <div>
-                    <p className="font-semibold">Platform</p>
-                    <p>Website</p>
-                  </div>
-                  <div>
-                    <p className="font-semibold">Environment</p>
-                    <p>Produksi</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {safeUrl && (
+              <a
+                href={safeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex items-center gap-1 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-3 py-1.5 text-xs text-white"
+                aria-label={`Buka situs ${nama_aplikasi || "aplikasi"}`}
+              >
+                <ExternalLink size={14} />
+              </a>
+            )}
           </div>
         </div>
-      )}
-    </>
+      </div>
+    </motion.div>
   );
 }

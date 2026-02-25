@@ -1,195 +1,433 @@
 "use client";
 
-import {motion} from "framer-motion";
-import {Globe, Layers, Users, Zap} from "lucide-react";
+import {type ComponentType, useMemo, useState} from "react";
+import {motion, AnimatePresence} from "framer-motion";
+import {
+  ArrowRight,
+  CheckCircle2,
+  Globe,
+  Layers,
+  Rocket,
+  ShieldCheck,
+  Sparkles,
+  Star,
+  Users,
+  Zap,
+} from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
+type Nilai = {
+  title: string;
+  shortDesc: string;
+  detail: string;
+  color: string;
+  icon: ComponentType<{size?: number; className?: string}>;
+};
+
+type Roadmap = {
+  year: string;
+  title: string;
+  text: string;
+  status: "Selesai" | "Berjalan" | "Rencana";
+};
+
 export default function TentangPage() {
-  const nilaiUtama = [
+  const nilaiUtama: Nilai[] = [
     {
       title: "Layanan Satu Pintu",
-      desc: "Akses berbagai layanan digital Pemerintah Kabupaten Ciamis dalam satu genggaman.",
-      color: "bg-[#2F68FF]",
-      icon: <Layers size={30} />,
+      shortDesc: "Semua layanan publik digital dalam satu akses.",
+      detail:
+        "Masyarakat dapat menemukan berbagai layanan prioritas daerah secara ringkas tanpa harus berpindah banyak kanal.",
+      color: "from-[#1E3A8A] to-[#2563EB]",
+      icon: Layers,
     },
     {
       title: "Integrasi",
-      desc: "Mengoptimalkan layanan publik yang efisien dan saling terhubung antar instansi.",
-      color: "bg-[#01B77B]",
-      icon: <Globe size={30} />,
+      shortDesc: "Data dan layanan terhubung lintas perangkat daerah.",
+      detail:
+        "Arsitektur integrasi mempercepat koordinasi antar OPD agar proses layanan lebih cepat, konsisten, dan transparan.",
+      color: "from-[#065F46] to-[#10B981]",
+      icon: Globe,
     },
     {
       title: "Kolaborasi",
-      desc: "Mendorong sinergi antara pemerintah, masyarakat, dan pelaku digital untuk kemajuan bersama.",
-      color: "bg-[#8A52F3]",
-      icon: <Users size={30} />,
+      shortDesc: "Pemerintah, masyarakat, dan komunitas bergerak bersama.",
+      detail:
+        "Sawala mendorong keterlibatan publik melalui informasi yang jelas, umpan balik terbuka, dan ruang kolaborasi digital.",
+      color: "from-[#7C3AED] to-[#A855F7]",
+      icon: Users,
     },
     {
       title: "Inovasi",
-      desc: "Meningkatkan kualitas pelayanan publik melalui ide dan teknologi terbaru.",
-      color: "bg-[#FF8A00]",
-      icon: <Zap size={30} />,
+      shortDesc: "Pembaruan layanan berbasis kebutuhan warga.",
+      detail:
+        "Setiap pengembangan diprioritaskan pada kemudahan akses, pengalaman pengguna, dan kebermanfaatan yang terukur.",
+      color: "from-[#C2410C] to-[#F97316]",
+      icon: Zap,
     },
   ];
 
-  const slide = {
-    backgroundImage: "/images/bg-footer.svg",
-    bgColor: "linear-gradient(to right, #08225C, #0E3B8C)",
-  };
+  const roadmap: Roadmap[] = [
+    {
+      year: "2025",
+      title: "Inisiasi Platform",
+      text: "Peluncuran fondasi Sawala sebagai kanal terpadu layanan digital Ciamis.",
+      status: "Selesai",
+    },
+    {
+      year: "2026",
+      title: "Integrasi Lintas OPD",
+      text: "Sinkronisasi layanan prioritas antar perangkat daerah dan penyelarasan alur layanan.",
+      status: "Berjalan",
+    },
+    {
+      year: "2027",
+      title: "Personalisasi Layanan",
+      text: "Pengembangan layanan mobile dan otomasi cerdas untuk pengalaman warga yang lebih adaptif.",
+      status: "Rencana",
+    },
+  ];
+
+  const [activeNilai, setActiveNilai] = useState(0);
+  const [activeRoadmap, setActiveRoadmap] = useState(1);
+  const [activePilar, setActivePilar] = useState<"Visi" | "Misi">("Visi");
+
+  const statusColor = useMemo(
+    () => ({
+      Selesai: "bg-emerald-100 text-emerald-700 border-emerald-200",
+      Berjalan: "bg-blue-100 text-blue-700 border-blue-200",
+      Rencana: "bg-orange-100 text-orange-700 border-orange-200",
+    }),
+    []
+  );
 
   return (
-    <main className="min-h-screen w-full flex flex-col items-center overflow-x-hidden bg-white">
-      {/* 🔹 Navbar */}
+    <main className="relative min-h-screen overflow-x-hidden bg-white">
       <Navbar />
 
-      {/* 🔹 Hero Section */}
-      <section className="relative w-full min-h-[60vh] md:min-h-[70vh] flex flex-col justify-center items-center text-center text-white bg-gradient-to-r from-[#08225C] to-[#0E3B8C] overflow-hidden px-4 py-10 md:px-6">
-        {/* Background */}
-        <div className="absolute inset-0 bg-[url('/images/bg-footer.svg')] bg-cover bg-center opacity-50 md:opacity-80"></div>
+      <section className="relative isolate min-h-[72vh] overflow-hidden px-6 pt-20 pb-16 text-white">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_#34d399_0%,_transparent_30%),radial-gradient(circle_at_bottom_right,_#60a5fa_0%,_transparent_30%),linear-gradient(115deg,_#0b1f4f,_#153f9f)]" />
 
-        {/* Title */}
-        <motion.h1
-          initial={{opacity: 0, y: 20}}
-          animate={{opacity: 1, y: 0}}
-          transition={{duration: 0.6}}
-          className="text-3xl leading-tight mb-3 font-bold z-10 
-               sm:text-4xl md:text-5xl"
-        >
-          Tentang <span className="text-[#00C18B]">Sawala</span>
-        </motion.h1>
-
-        {/* Paragraph 1 */}
-        <motion.p
-          initial={{opacity: 0, y: 25}}
-          animate={{opacity: 1, y: 0}}
-          transition={{duration: 0.8, delay: 0.2}}
-          className="text-gray-200 text-base leading-relaxed mt-2 z-10 
-               max-w-xl sm:max-w-3xl md:max-w-5xl md:text-lg"
-        >
-          SAWALA adalah singkatan dari Sistem Aplikasi dan Wadah Layanan Ciamis,
-          wadah layanan digital terpadu Kabupaten Ciamis untuk menghadirkan
-          pelayanan publik yang efisien, transparan, dan mudah diakses oleh
-          masyarakat.
-        </motion.p>
-
-        {/* Paragraph 2 */}
-        <motion.p
-          initial={{opacity: 0, y: 15}}
-          animate={{opacity: 1, y: 0}}
-          transition={{duration: 0.8, delay: 0.4}}
-          className="text-gray-200 text-base leading-relaxed mt-4 z-10 
-               max-w-xl sm:max-w-3xl md:max-w-5xl md:text-lg"
-        >
-          Nama Sawala berasal dari bahasa Sunda yang berarti{" "}
-          <span className="italic">musyawarah,</span> tempat berdiskusi dan
-          mencapai mufakat. Makna ini mencerminkan semangat kolaborasi dan
-          kebersamaan dalam membangun transformasi digital di Kabupaten Ciamis.
-        </motion.p>
-      </section>
-
-      {/* 🔹 Section Deskripsi */}
-      <section className="w-full max-w-6xl px-6 py-20 text-gray-800">
         <motion.div
-          initial={{opacity: 0, y: 25}}
-          whileInView={{opacity: 1, y: 0}}
-          transition={{duration: 0.6}}
-          viewport={{once: true}}
-          className="text-center mb-12"
-        >
-          <h2 className="text-3xl font-bold text-[#0E3B8C] mb-4">
-            Transformasi Digital untuk Wargi Ciamis
-          </h2>
-          <p className="text-lg leading-relaxed text-gray-700 max-w-3xl mx-auto">
-            <span className="font-semibold text-[#0E3B8C]">Sawala</span> lahir
-            sejak 2025 untuk menyatukan seluruh layanan digital Pemerintah
-            Kabupaten Ciamis dalam satu platform terpadu. Kami berkomitmen
-            menghadirkan sistem pelayanan publik yang efisien, transparan, dan
-            inovatif bagi seluruh masyarakat.
-          </p>
-        </motion.div>
-
-        {/* 🔹 Nilai Utama ala JAKI */}
+          className="absolute -top-8 left-8 h-48 w-48 rounded-full border border-white/20"
+          animate={{rotate: 360}}
+          transition={{duration: 16, repeat: Infinity, ease: "linear"}}
+        />
         <motion.div
-          initial={{opacity: 0, y: 25}}
-          whileInView={{opacity: 1, y: 0}}
-          transition={{duration: 0.7, delay: 0.1}}
-          viewport={{once: true}}
-          className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-5xl mx-auto"
-        >
-          {nilaiUtama.map((item, i) => (
+          className="absolute bottom-10 right-10 h-28 w-28 rounded-full bg-white/10 blur-xl"
+          animate={{y: [0, -14, 0], x: [0, -10, 0]}}
+          transition={{duration: 5, repeat: Infinity, ease: "easeInOut"}}
+        />
+
+        <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-10 lg:grid-cols-2">
+          <div>
             <motion.div
-              key={i}
               initial={{opacity: 0, y: 20}}
-              whileInView={{opacity: 1, y: 0}}
-              transition={{duration: 0.5, delay: i * 0.1}}
-              viewport={{once: true}}
-              className={`relative rounded-2xl text-white p-8 shadow-md hover:shadow-xl hover:scale-[1.02] transition-all ${item.color} min-h-[240px] flex flex-col justify-between`}
+              animate={{opacity: 1, y: 0}}
+              transition={{duration: 0.5}}
+              className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm backdrop-blur"
             >
-              {/* 🔹 Pola titik-titik kiri bawah */}
-              <div className="absolute bottom-4 left-4 opacity-15">
-                <svg width="80" height="80" viewBox="0 0 100 100" fill="none">
-                  {[...Array(8)].map((_, row) =>
-                    [...Array(8)].map((_, col) => (
-                      <circle
-                        key={`${row}-${col}`}
-                        cx={col * 12}
-                        cy={row * 12}
-                        r="2"
-                        fill="white"
-                      />
-                    ))
-                  )}
-                </svg>
-              </div>
-
-              {/* 🔹 Konten */}
-              <div className="relative z-10">
-                <h1 className="text-xl font-semibold mb-2">{item.title}</h1>
-                <h3 className="text-md leading-relaxed opacity-90">
-                  {item.desc}
-                </h3>
-              </div>
-
-              {/* 🔹 Icon di pojok kanan bawah */}
-              <div className="absolute bottom-6 right-6 opacity-40">
-                {item.icon}
-              </div>
+              <Sparkles size={15} className="text-emerald-300" />
+              Sistem Aplikasi dan Wadah Layanan Ciamis
             </motion.div>
-          ))}
-        </motion.div>
-      </section>
 
-      {/* 🔹 Komitmen Kami */}
-      <section className="w-full bg-[#F5F8FF] py-16">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <motion.h2
-            initial={{opacity: 0, y: 15}}
-            whileInView={{opacity: 1, y: 0}}
-            transition={{duration: 0.6}}
-            viewport={{once: true}}
-            className="text-2xl md:text-3xl font-bold text-[#0E3B8C] mb-4"
+            <motion.h1
+              initial={{opacity: 0, y: 24}}
+              animate={{opacity: 1, y: 0}}
+              transition={{duration: 0.6, delay: 0.1}}
+              className="text-4xl font-bold leading-tight md:text-5xl"
+            >
+              Tentang <span className="text-emerald-300">Sawala</span>
+            </motion.h1>
+
+            <motion.p
+              initial={{opacity: 0, y: 24}}
+              animate={{opacity: 1, y: 0}}
+              transition={{duration: 0.6, delay: 0.2}}
+              className="mt-5 max-w-xl text-base leading-relaxed text-blue-100 md:text-lg"
+            >
+              Sawala adalah platform layanan digital terpadu Pemerintah Kabupaten
+              Ciamis untuk menghadirkan pelayanan yang cepat, mudah diakses, dan
+              berorientasi pada kebutuhan masyarakat.
+            </motion.p>
+
+            <motion.div
+              initial={{opacity: 0, y: 18}}
+              animate={{opacity: 1, y: 0}}
+              transition={{duration: 0.6, delay: 0.3}}
+              className="mt-8 flex flex-wrap gap-3"
+            >
+              {["Transparan", "Efisien", "Inklusif"].map((item) => (
+                <span
+                  key={item}
+                  className="rounded-full border border-white/25 bg-white/10 px-4 py-2 text-sm"
+                >
+                  {item}
+                </span>
+              ))}
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{opacity: 0, y: 24}}
+            animate={{opacity: 1, y: 0}}
+            transition={{duration: 0.7, delay: 0.25}}
+            className="rounded-3xl border border-white/20 bg-white/10 p-6 backdrop-blur"
           >
-            Komitmen Kami
-          </motion.h2>
-          <motion.p
-            initial={{opacity: 0, y: 20}}
-            whileInView={{opacity: 1, y: 0}}
-            transition={{duration: 0.7, delay: 0.2}}
-            viewport={{once: true}}
-            className="text-gray-700 max-w-3xl mx-auto text-lg leading-relaxed"
-          >
-            Kami percaya bahwa teknologi digital adalah jembatan menuju
-            pelayanan publik yang lebih mudah diakses, inklusif, dan terpercaya.
-            Melalui <span className="font-semibold text-[#00C18B]">Sawala</span>
-            , kami berupaya mewujudkan Ciamis Digital yang inklusif dan berdaya
-            saing, serta menjadi wadah kolaborasi bagi seluruh instansi dan
-            masyarakat dalam menciptakan inovasi untuk kemajuan daerah.
-          </motion.p>
+            <p className="text-sm uppercase tracking-wide text-blue-100">
+              Sorotan Komitmen
+            </p>
+            <div className="mt-5 space-y-4">
+              {[
+                {
+                  icon: ShieldCheck,
+                  title: "Keamanan Data",
+                  text: "Menerapkan prinsip perlindungan data dan tata kelola layanan digital.",
+                },
+                {
+                  icon: Rocket,
+                  title: "Peningkatan Berkelanjutan",
+                  text: "Evaluasi rutin untuk memastikan layanan tetap relevan dan responsif.",
+                },
+                {
+                  icon: CheckCircle2,
+                  title: "Akses Mudah",
+                  text: "Antarmuka sederhana agar layanan dapat digunakan oleh berbagai lapisan warga.",
+                },
+              ].map((item, idx) => (
+                <motion.div
+                  key={item.title}
+                  initial={{opacity: 0, x: 15}}
+                  animate={{opacity: 1, x: 0}}
+                  transition={{delay: 0.4 + idx * 0.1}}
+                  className="flex items-start gap-3 rounded-xl bg-white/10 p-3"
+                >
+                  <item.icon size={18} className="mt-0.5 text-emerald-300" />
+                  <div>
+                    <h3 className="font-semibold">{item.title}</h3>
+                    <p className="text-sm text-blue-100">{item.text}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* 🔹 Footer */}
+      <section className="mx-auto max-w-6xl px-6 py-20">
+        <motion.div
+          initial={{opacity: 0, y: 24}}
+          whileInView={{opacity: 1, y: 0}}
+          viewport={{once: true}}
+          className="mb-8 text-center"
+        >
+          <h2 className="text-3xl font-bold text-[#0E3B8C]">Arah Pengembangan</h2>
+          <p className="mx-auto mt-3 max-w-3xl text-gray-600">
+            Pilar utama Sawala dirancang agar transformasi digital berjalan
+            terukur, human-centered, dan berkelanjutan.
+          </p>
+        </motion.div>
+
+        <div className="rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 to-white p-4 shadow-sm md:p-6">
+          <div className="mb-5 flex w-full flex-wrap gap-2">
+            {(["Visi", "Misi"] as const).map((item) => (
+              <button
+                key={item}
+                type="button"
+                onClick={() => setActivePilar(item)}
+                className={`rounded-full px-5 py-2 text-sm font-medium transition ${
+                  activePilar === item
+                    ? "bg-[#0E3B8C] text-white"
+                    : "bg-white text-[#0E3B8C] hover:bg-blue-100"
+                }`}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activePilar}
+              initial={{opacity: 0, y: 12}}
+              animate={{opacity: 1, y: 0}}
+              exit={{opacity: 0, y: -10}}
+              transition={{duration: 0.25}}
+              className="rounded-xl bg-white p-5"
+            >
+              {activePilar === "Visi" ? (
+                <p className="text-gray-700 leading-relaxed">
+                  Menjadi ekosistem layanan digital daerah yang terintegrasi,
+                  dipercaya masyarakat, dan mampu mendorong kualitas hidup Wargi
+                  Ciamis melalui layanan publik yang cepat dan adaptif.
+                </p>
+              ) : (
+                <ul className="space-y-3 text-gray-700">
+                  {[
+                    "Menyederhanakan akses layanan publik melalui satu pintu digital.",
+                    "Memperkuat kolaborasi lintas OPD dengan integrasi data dan proses.",
+                    "Mendorong budaya inovasi pelayanan berbasis kebutuhan masyarakat.",
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-2">
+                      <CheckCircle2 size={18} className="mt-0.5 text-emerald-600" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 pb-20">
+        <motion.h3
+          initial={{opacity: 0, y: 20}}
+          whileInView={{opacity: 1, y: 0}}
+          viewport={{once: true}}
+          className="mb-8 text-2xl font-bold text-[#0E3B8C]"
+        >
+          Nilai Utama Sawala
+        </motion.h3>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          {nilaiUtama.map((item, index) => {
+            const Icon = item.icon;
+            const active = activeNilai === index;
+            return (
+              <motion.button
+                key={item.title}
+                type="button"
+                onClick={() => setActiveNilai(index)}
+                whileHover={{y: -4}}
+                className={`rounded-2xl p-[1px] text-left ${
+                  active ? "shadow-xl" : "shadow-sm"
+                }`}
+              >
+                <div
+                  className={`h-full rounded-2xl bg-gradient-to-br ${item.color} p-6 text-white transition`}
+                >
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <Icon size={22} />
+                      <h4 className="font-semibold">{item.title}</h4>
+                    </div>
+                    {active && <Star size={18} className="text-yellow-200" />}
+                  </div>
+                  <p className="text-sm text-white/90">{item.shortDesc}</p>
+                </div>
+              </motion.button>
+            );
+          })}
+        </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeNilai}
+            initial={{opacity: 0, y: 16}}
+            animate={{opacity: 1, y: 0}}
+            exit={{opacity: 0, y: -12}}
+            transition={{duration: 0.3}}
+            className="mt-6 rounded-2xl border border-blue-100 bg-blue-50 p-6"
+          >
+            <p className="text-sm font-semibold uppercase tracking-wide text-[#0E3B8C]">
+              Detail Nilai
+            </p>
+            <p className="mt-2 text-gray-700">{nilaiUtama[activeNilai].detail}</p>
+          </motion.div>
+        </AnimatePresence>
+      </section>
+
+      <section className="bg-[#F6F9FF] px-6 py-20">
+        <div className="mx-auto max-w-6xl">
+          <motion.h3
+            initial={{opacity: 0, y: 20}}
+            whileInView={{opacity: 1, y: 0}}
+            viewport={{once: true}}
+            className="mb-8 text-2xl font-bold text-[#0E3B8C]"
+          >
+            Roadmap Pengembangan
+          </motion.h3>
+
+          <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="space-y-3">
+              {roadmap.map((item, idx) => {
+                const active = activeRoadmap === idx;
+                return (
+                  <button
+                    key={item.year}
+                    type="button"
+                    onClick={() => setActiveRoadmap(idx)}
+                    className={`w-full rounded-xl border p-4 text-left transition ${
+                      active
+                        ? "border-[#0E3B8C] bg-white shadow"
+                        : "border-blue-100 bg-white/70 hover:border-blue-300"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="font-semibold text-[#0E3B8C]">{item.year}</p>
+                      <span
+                        className={`rounded-full border px-2 py-1 text-xs ${statusColor[item.status]}`}
+                      >
+                        {item.status}
+                      </span>
+                    </div>
+                    <p className="mt-1 text-sm text-gray-600">{item.title}</p>
+                  </button>
+                );
+              })}
+            </div>
+
+            <AnimatePresence mode="wait">
+              <motion.article
+                key={roadmap[activeRoadmap].year}
+                initial={{opacity: 0, x: 20}}
+                animate={{opacity: 1, x: 0}}
+                exit={{opacity: 0, x: -16}}
+                transition={{duration: 0.28}}
+                className="rounded-2xl border border-blue-100 bg-white p-6 shadow-sm"
+              >
+                <p className="text-sm font-semibold uppercase tracking-wide text-blue-500">
+                  Tahun {roadmap[activeRoadmap].year}
+                </p>
+                <h4 className="mt-2 text-xl font-bold text-[#0E3B8C]">
+                  {roadmap[activeRoadmap].title}
+                </h4>
+                <p className="mt-3 leading-relaxed text-gray-700">
+                  {roadmap[activeRoadmap].text}
+                </p>
+                <div className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#0E3B8C]">
+                  Arah berikutnya
+                  <ArrowRight size={16} />
+                </div>
+              </motion.article>
+            </AnimatePresence>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-4xl px-6 py-20 text-center">
+        <motion.h3
+          initial={{opacity: 0, y: 20}}
+          whileInView={{opacity: 1, y: 0}}
+          viewport={{once: true}}
+          className="text-2xl font-bold text-[#0E3B8C] md:text-3xl"
+        >
+          Komitmen Untuk Pelayanan Publik Modern
+        </motion.h3>
+        <motion.p
+          initial={{opacity: 0, y: 20}}
+          whileInView={{opacity: 1, y: 0}}
+          transition={{delay: 0.1}}
+          viewport={{once: true}}
+          className="mx-auto mt-5 max-w-2xl text-gray-600"
+        >
+          Sawala dikembangkan sebagai fondasi Ciamis Digital: menghadirkan
+          layanan yang informatif, kolaboratif, dan berdampak nyata untuk warga.
+        </motion.p>
+      </section>
+
       <Footer />
     </main>
   );

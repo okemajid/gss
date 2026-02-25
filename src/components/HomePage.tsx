@@ -1,20 +1,21 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { useSearchParams } from "next/navigation";
+import {useState, useEffect, useRef} from "react";
+import {useSearchParams} from "next/navigation";
 import Navbar from "@/components/Navbar";
 import HeroCarousel from "@/components/Carousel";
 import Footer from "@/components/Footer";
 import SearchAndCategoryBar from "@/components/SearchBar";
 import Pagination from "@/components/Pagination";
 import FeatureGrid from "@/components/FeatureGrid";
-import { getFeatures, getCategories, Feature } from "@/data/features";
+import DetailCard, {type AppDetailData} from "@/components/DetailCard";
+import {getFeatures, getCategories, Feature} from "@/data/features";
 
 export default function HomePage() {
-  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
+  const [categories, setCategories] = useState<{id: number; name: string}[]>([]);
   const [features, setFeatures] = useState<Feature[]>([]);
   const [filteredFeatures, setFilteredFeatures] = useState<Feature[]>([]);
-  const [activeCategory, setActiveCategory] = useState<{ id: number; name: string }>({
+  const [activeCategory, setActiveCategory] = useState<{id: number; name: string}>({
     id: 0,
     name: "All",
   });
@@ -22,31 +23,30 @@ export default function HomePage() {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedDetail, setSelectedDetail] = useState<AppDetailData | null>(null);
 
   const itemsPerPage = 12;
   const searchParams = useSearchParams();
   const scrollLockRef = useRef<number>(0);
 
-  // 🔍 Smooth scroll via query param
   useEffect(() => {
     const section = searchParams.get("scrollTo");
     if (section) {
       const target = document.getElementById(section);
       if (target) {
         setTimeout(() => {
-          target.scrollIntoView({ behavior: "smooth" });
+          target.scrollIntoView({behavior: "smooth"});
         }, 500);
       }
     }
   }, [searchParams]);
 
-  // 🔹 Load awal (kategori + semua data)
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
         setLoading(true);
         const [catData, featData] = await Promise.all([getCategories(), getFeatures()]);
-        setCategories([{ id: 0, name: "All" }, ...catData]);
+        setCategories([{id: 0, name: "All"}, ...catData]);
         setFeatures(featData);
         setFilteredFeatures(featData);
       } finally {
@@ -56,7 +56,6 @@ export default function HomePage() {
     fetchInitialData();
   }, []);
 
-  // 🔹 Update saat kategori berubah
   useEffect(() => {
     if (!activeCategory) return;
     const fetchByCategory = async () => {
@@ -74,7 +73,6 @@ export default function HomePage() {
     fetchByCategory();
   }, [activeCategory]);
 
-  // 🔹 Filter pencarian
   useEffect(() => {
     if (!searchTerm.trim()) {
       setFilteredFeatures(features);
@@ -92,7 +90,6 @@ export default function HomePage() {
     setCurrentPage(1);
   }, [searchTerm, features]);
 
-  // 🔹 Upload gambar (preview)
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -101,7 +98,6 @@ export default function HomePage() {
     reader.readAsDataURL(file);
   };
 
-  // 🔹 Pagination
   const totalPages = Math.ceil(filteredFeatures.length / itemsPerPage);
   const indexOfLast = currentPage * itemsPerPage;
   const indexOfFirst = indexOfLast - itemsPerPage;
@@ -112,23 +108,20 @@ export default function HomePage() {
       scrollLockRef.current = window.scrollY;
       setCurrentPage(page);
       setTimeout(() => {
-        window.scrollTo({ top: scrollLockRef.current, behavior: "instant" });
+        window.scrollTo({top: scrollLockRef.current, behavior: "instant"});
       }, 100);
     }
   };
 
   return (
     <main
-      className="min-h-screen w-full flex flex-col items-center overflow-x-hidden relative bg-white text-gray-900"
+      className="relative flex min-h-screen w-full flex-col items-center overflow-x-hidden bg-white text-gray-900"
       suppressHydrationWarning
     >
-      {/* 🔹 Loading Overlay */}
       {loading && (
-        <div className="fixed inset-0 z-50 flex flex-col justify-center items-center bg-white/80 backdrop-blur-md">
-          <div className="w-16 h-16 border-4 border-blue-300 border-t-blue-600 rounded-full animate-spin" />
-          <p className="mt-6 text-blue-700 text-lg font-semibold">
-            Memuat SAWALA...
-          </p>
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/80 backdrop-blur-md">
+          <div className="h-16 w-16 animate-spin rounded-full border-4 border-blue-300 border-t-blue-600" />
+          <p className="mt-6 text-lg font-semibold text-blue-700">Memuat SAWALA...</p>
         </div>
       )}
 
@@ -137,7 +130,7 @@ export default function HomePage() {
 
       <section
         id="daftar-aplikasi"
-        className="w-full min-h-screen flex flex-col items-center justify-start pt-32 pb-10 text-center bg-white"
+        className="flex min-h-screen w-full flex-col items-center justify-start bg-white pt-32 pb-10 text-center"
       >
         <SearchAndCategoryBar
           activeCategory={activeCategory}
@@ -152,7 +145,11 @@ export default function HomePage() {
           }
         />
 
-        <FeatureGrid features={currentFeatures} loading={loading} />
+        <FeatureGrid
+          features={currentFeatures}
+          loading={loading}
+          onDetail={setSelectedDetail}
+        />
 
         <Pagination
           currentPage={currentPage}
@@ -162,6 +159,8 @@ export default function HomePage() {
           onPageChange={handlePageChange}
         />
       </section>
+
+      <DetailCard data={selectedDetail} onClose={() => setSelectedDetail(null)} />
 
       <Footer />
     </main>
