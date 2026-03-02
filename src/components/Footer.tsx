@@ -30,7 +30,6 @@ export default function Footer() {
       }}
     >
       <div className="max-w-6xl mx-auto flex flex-col  justify-center md:flex-row gap-14 md:gap-16 items-start">
-        
         {/* Logo + Nama */}
         <div className="flex items-start gap-4">
           {/* Logo */}
@@ -46,11 +45,11 @@ export default function Footer() {
           <div className="flex flex-col text-left min-w-[300px]">
             <h2 className="text-xl font-bold">Sawala</h2>
             <p className="text-sm text-gray-300 max-w-sm">
-              Platform layanan digital terpadu untuk masyarakat di Kabupaten Ciamis.
+              Platform layanan digital terpadu untuk masyarakat di Kabupaten
+              Ciamis.
             </p>
           </div>
         </div>
-
 
         {/* Informasi */}
         <div className="flex flex-col text-left gap-4 min-w-[220px]">
@@ -60,7 +59,7 @@ export default function Footer() {
             Home
           </Link>
           <Link
-            href="/daftar-aplikasi"
+            href="/#daftar-aplikasi"
             className="text-gray-300 hover:text-white text-sm"
           >
             Daftar Aplikasi
@@ -119,7 +118,8 @@ export default function Footer() {
 
       {/* Copyright */}
       <div className="mt-10 text-gray-400 text-xs text-center">
-        © {new Date().getFullYear()} Dinas Komunikasi dan Informatika – Pemerintah Kabupaten Ciamis
+        © {new Date().getFullYear()} Dinas Komunikasi dan Informatika –
+        Pemerintah Kabupaten Ciamis
       </div>
     </footer>
   );

@@ -1,13 +1,15 @@
 "use client";
 
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {AnimatePresence, motion} from "framer-motion";
 import {ExternalLink, Globe, Layers3, UserRound, X} from "lucide-react";
 import Image from "next/image";
+import {createAvatar} from "@dicebear/core";
+import * as identicon from "@dicebear/identicon";
 
 export interface AppDetailData {
   nomor_registrasi: string;
-  nama_aplikasi: string;
+  nama_aplikasi?: string;
   domain_aplikasi: string;
   kategori: string;
   pengguna: string;
@@ -38,6 +40,21 @@ export default function DetailCard({data, onClose}: DetailCardProps) {
       document.body.style.overflow = previousOverflow;
     };
   }, [data, onClose]);
+
+  // Generate AI-style avatar berdasarkan nama aplikasi
+  const [avatarUri, setAvatarUri] = useState<string>("");
+
+  useEffect(() => {
+    const generateAvatar = async () => {
+      const uri = await createAvatar(identicon, {
+        seed: data?.nama_aplikasi || "app",
+      }).toDataUri();
+
+      setAvatarUri(uri);
+    };
+
+    generateAvatar();
+  }, [data?.nama_aplikasi]);
 
   return (
     <AnimatePresence>
@@ -75,17 +92,23 @@ export default function DetailCard({data, onClose}: DetailCardProps) {
               </button>
 
               <div className="flex items-start gap-4 pr-8">
-                <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white/15">
-                  {data.logo ? (
+                <div className="relative flex h-20 w-20 flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-white/30 to-white/10 backdrop-blur-md border border-white/30 shadow-lg shadow-blue-900/30">
+                  {/* Glow background */}
+                  <div className="absolute inset-0 rounded-2xl bg-white/10 animate-pulse" />
+
+                  {avatarUri ? (
                     <Image
-                      src={data.logo}
-                      alt={data.nama_aplikasi}
-                      width={48}
-                      height={48}
-                      className="object-contain"
+                      src={avatarUri}
+                      alt={data?.nama_aplikasi || "Ilustrasi aplikasi"}
+                      width={80}
+                      height={80}
+                      className="relative z-10 object-contain drop-shadow-md transition-transform duration-300 hover:scale-110"
                     />
                   ) : (
-                    <Layers3 size={28} className="text-blue-100" />
+                    <Layers3
+                      size={32}
+                      className="relative z-10 text-white drop-shadow-md"
+                    />
                   )}
                 </div>
                 <div>
@@ -110,7 +133,9 @@ export default function DetailCard({data, onClose}: DetailCardProps) {
                   </p>
                   <div className="mt-1 flex items-center gap-2 text-sm text-blue-900">
                     <Globe size={15} />
-                    <span className="truncate">{data.domain_aplikasi || "-"}</span>
+                    <span className="truncate">
+                      {data.domain_aplikasi || "-"}
+                    </span>
                   </div>
                 </div>
 
@@ -126,7 +151,9 @@ export default function DetailCard({data, onClose}: DetailCardProps) {
               </div>
 
               <div>
-                <p className="text-sm font-semibold text-slate-800">Deskripsi</p>
+                <p className="text-sm font-semibold text-slate-800">
+                  Deskripsi
+                </p>
                 <p className="mt-1 leading-relaxed text-slate-600">
                   {data.deskripsi || "Deskripsi belum tersedia."}
                 </p>
@@ -148,7 +175,9 @@ export default function DetailCard({data, onClose}: DetailCardProps) {
                     <ExternalLink size={15} />
                   </a>
                 ) : (
-                  <span className="text-xs text-slate-500">URL aplikasi belum tersedia.</span>
+                  <span className="text-xs text-slate-500">
+                    URL aplikasi belum tersedia.
+                  </span>
                 )}
               </div>
             </div>

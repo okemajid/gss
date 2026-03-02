@@ -1,12 +1,11 @@
 "use client";
 
+import {useEffect, useState} from "react";
 import {motion} from "framer-motion";
-import {
-  Star,
-  ExternalLink,
-  Eye,
-} from "lucide-react";
+import {Star, ExternalLink, Eye} from "lucide-react";
 import Image from "next/image";
+import {createAvatar} from "@dicebear/core";
+import * as identicon from "@dicebear/identicon";
 import {type AppDetailData} from "@/components/DetailCard";
 
 interface CardFeatureProps {
@@ -16,7 +15,6 @@ interface CardFeatureProps {
   pengguna?: string;
   deskripsi?: string;
   url?: string;
-  logo?: string;
   categories?: string;
   kategori?: string;
   onDetail?: (data: AppDetailData) => void;
@@ -93,7 +91,6 @@ export default function CardFeature(props: CardFeatureProps) {
     pengguna,
     deskripsi,
     url,
-    logo,
     categories,
     kategori,
     onDetail,
@@ -112,9 +109,23 @@ export default function CardFeature(props: CardFeatureProps) {
     pengguna: pengguna ?? "-",
     deskripsi: deskripsi ?? "Deskripsi belum tersedia.",
     url: safeUrl ?? "",
-    logo,
     kategori: currentCategory || "Umum",
   };
+
+  // Generate AI-style avatar berdasarkan nama aplikasi
+  const [avatarUri, setAvatarUri] = useState<string>("");
+
+  useEffect(() => {
+    const generateAvatar = async () => {
+      const uri = await createAvatar(identicon, {
+        seed: nama_aplikasi || "app",
+      }).toDataUri();
+
+      setAvatarUri(uri);
+    };
+
+    generateAvatar();
+  }, [nama_aplikasi]);
 
   return (
     <motion.div
@@ -123,71 +134,24 @@ export default function CardFeature(props: CardFeatureProps) {
       transition={{duration: 0.2}}
       className="group w-[260px] overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-sm hover:border-blue-300 hover:shadow-xl hover:shadow-blue-500/20"
     >
+      {/* HEADER */}
       <div
-        className={`relative flex h-36 items-center justify-center bg-gradient-to-br ${logo ? "from-blue-100 to-blue-50" : categoryTheme.gradient}`}
+        className={`relative flex h-36 items-center justify-center bg-gradient-to-br ${categoryTheme.gradient}`}
       >
-        {logo ? (
-          <Image
-            src={logo}
-            alt={nama_aplikasi || "logo"}
-            width={70}
-            height={70}
-            className="object-contain transition-transform duration-300 group-hover:scale-110"
-          />
-        ) : (
-          <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
-            <motion.div
-              animate={{x: [0, 24, 0], y: [0, -10, 0]}}
-              transition={{duration: 7, repeat: Infinity, ease: "easeInOut"}}
-              className={`absolute -left-8 -top-8 h-28 w-28 rounded-full blur-xl ${categoryTheme.accent}`}
-            />
-            <motion.div
-              animate={{x: [0, -20, 0], y: [0, 10, 0]}}
-              transition={{duration: 8, repeat: Infinity, ease: "easeInOut"}}
-              className="absolute -bottom-10 -right-8 h-32 w-32 rounded-full bg-white/35 blur-2xl"
-            />
-            <motion.div
-              animate={{rotate: 360}}
-              transition={{duration: 16, repeat: Infinity, ease: "linear"}}
-              className="absolute h-24 w-24 rounded-full border border-white/45 border-dashed"
-            />
-            <motion.div
-              animate={{rotate: -360}}
-              transition={{duration: 22, repeat: Infinity, ease: "linear"}}
-              className="absolute h-36 w-36 rounded-full border border-white/30"
-            />
-            <motion.div
-              animate={{opacity: [0.3, 0.7, 0.3], scale: [1, 1.06, 1]}}
-              transition={{duration: 4.5, repeat: Infinity, ease: "easeInOut"}}
-              className="absolute inset-x-6 bottom-5 h-7 rounded-full bg-white/40 blur-md"
-            />
-            <svg
-              className="absolute inset-0 h-full w-full opacity-45"
-              viewBox="0 0 260 140"
-              fill="none"
-              aria-hidden="true"
-            >
-              <motion.path
-                d="M0 96C34 84 52 64 81 66C114 69 126 101 158 102C191 103 211 79 260 71"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-                initial={{pathLength: 0.2, opacity: 0.2}}
-                animate={{pathLength: [0.2, 1, 0.2], opacity: [0.2, 0.6, 0.2]}}
-                transition={{duration: 5.5, repeat: Infinity, ease: "easeInOut"}}
-              />
-              <motion.path
-                d="M0 53C23 41 45 39 70 47C91 54 109 72 139 74C171 76 192 58 260 41"
-                stroke="white"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                initial={{pathLength: 0.1, opacity: 0.15}}
-                animate={{pathLength: [0.1, 0.9, 0.1], opacity: [0.15, 0.45, 0.15]}}
-                transition={{duration: 6.2, repeat: Infinity, ease: "easeInOut", delay: 0.4}}
-              />
-            </svg>
-          </div>
-        )}
+        {/* AI Generated Illustration */}
+        <motion.div
+          animate={{rotate: 360}}
+          transition={{duration: 40, repeat: Infinity, ease: "linear"}}
+          className="absolute h-28 w-28 rounded-full border border-white/40 border-dashed"
+        />
+
+        <Image
+          src={avatarUri}
+          alt={nama_aplikasi || "Ilustrasi aplikasi"}
+          width={80}
+          height={80}
+          className="z-10 object-contain transition-transform duration-300 group-hover:scale-110"
+        />
 
         {featured && (
           <div className="absolute right-3 top-3 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 px-2 py-1 text-[10px] text-white">
@@ -196,13 +160,22 @@ export default function CardFeature(props: CardFeatureProps) {
         )}
       </div>
 
+      {/* CONTENT */}
       <div className="p-5">
         <h3 className="line-clamp-1 font-semibold text-blue-900">
           {nama_aplikasi || "Tanpa Nama"}
         </h3>
 
         {domain_aplikasi && (
-          <span className="mt-1 inline-block rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 text-xs text-blue-700">
+          <span
+            className={`mt-1 inline-block rounded-full border px-2 py-0.5 text-xs font-medium ${
+              domain_aplikasi.toLowerCase().includes("khusus")
+                ? "border-orange-200 bg-orange-50 text-orange-700"
+                : domain_aplikasi.toLowerCase().includes("umum")
+                  ? "border-blue-200 bg-blue-50 text-blue-700"
+                  : "border-slate-200 bg-slate-50 text-slate-600"
+            }`}
+          >
             {domain_aplikasi}
           </span>
         )}
