@@ -192,11 +192,8 @@ export default function CardFeature(props: CardFeatureProps) {
 
         <div className="flex items-center justify-between text-sm">
           <div className="flex items-center gap-1 text-amber-500">
-            <Star className="h-4 w-4 fill-current" />
-            <span className="text-gray-700">4.5</span>
-          </div>
-
-          <div className="flex gap-2">
+            {/* <Star className="h-4 w-4 fill-current" /> */}
+            {/* <span className="text-gray-700">4.5</span> */}
             <button
               type="button"
               onClick={(e) => {
@@ -209,6 +206,21 @@ export default function CardFeature(props: CardFeatureProps) {
               <Eye size={14} />
               Detail
             </button>
+          </div>
+
+          <div className="flex gap-2">
+            {/* <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onDetail?.(payload);
+              }}
+              className="inline-flex items-center gap-1 rounded-lg border border-blue-200 px-3 py-1.5 text-xs text-blue-700 transition hover:bg-blue-50"
+            >
+              <Eye size={14} />
+              Detail
+            </button> */}
 
             {safeUrl && (
               <a
