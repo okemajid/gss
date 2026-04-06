@@ -132,7 +132,7 @@ export default function CardFeature(props: CardFeatureProps) {
       whileHover={{y: -6}}
       whileTap={{scale: 0.985}}
       transition={{duration: 0.2}}
-      className="group w-[260px] overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-sm hover:border-blue-300 hover:shadow-xl hover:shadow-blue-500/20"
+      className="group w-full max-w-[260px] overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-sm hover:border-blue-300 hover:shadow-xl hover:shadow-blue-500/20"
     >
       {/* HEADER */}
       <div
